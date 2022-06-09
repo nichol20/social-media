@@ -2,8 +2,15 @@ import db from "../../db";
 
 export class GetAllUsersService {
   async execute() {
-    const usersCollection = db.getDb().collection('users')
-    
-    return await usersCollection.find().toArray()
+    // Get all users in database
+    const userCollection = db.getDb().collection('users')
+    const users = await userCollection.find().toArray()
+
+    // Filter data and return
+    return users.map(user => {
+      const { password, ...filteredData } = user
+
+      return filteredData
+    })
   }
 }

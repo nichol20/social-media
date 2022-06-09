@@ -3,20 +3,23 @@ import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Get all posts", () => {
+describe("Update posts", () => {
   const userIds: string[] = []
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'getallposts user test',
-    email: 'getallpostsuser@test.com',
-    password: 'getallpostsusertest123',
+    name: 'updatepost user test',
+    email: 'updatepostuser@test.com',
+    password: 'updatepostusertest123',
     image: '__tests__/test_image.png'
   }
   const post = {
-    description: 'get all posts test',
+    description: 'update post test',
     image: '__tests__/test_image.png'
+  }
+  const newPostData = {
+    description: 'updated post'
   }
 
   beforeAll(async () => {
@@ -56,8 +59,8 @@ describe("Get all posts", () => {
     })
   })
 
-  it("should get all posts", async () => {
-    const { body: { insertedId: userId } } = await request
+  it("should update a post", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
@@ -66,22 +69,52 @@ describe("Get all posts", () => {
 
     userIds.push(userId)
 
-    await request
+    const { body: { _id: postId } } = await request
       .post('/posts')
-      .field('author_id', userId)
-      .field('description', post.description)
-      .attach('image', post.image)
-
-    await request
-      .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('author_id', userId)
       .field('description', post.description)
       .attach('image', post.image)
 
 
-    const response = await request.get('/posts')
+    const response = await request
+      .patch(`/posts/${postId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
+      .field('description', newPostData.description)
 
-    expect(response.body.length).toBe(2)
+    const postCollection = db.collection('posts')
+    const updatedPost = await postCollection.findOne({ _id: new ObjectId(postId) })
+
+    expect(updatedPost?.description).toBe(newPostData.description)
+    expect(updatedPost).toHaveProperty('created_at')
+    expect(response.status).toBe(200)
   })
 
+  it("should not update the image", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
+      .post('/users')
+      .field('name', user.name)
+      .field('email', user.email)
+      .field('password', user.password)
+      .attach('image', user.image)
+
+    userIds.push(userId)
+
+    const { body: { insertedId: postId } } = await request
+      .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .field('author_id', userId)
+      .field('description', post.description)
+      .attach('image', post.image)
+    
+
+    const response = await request
+      .patch(`/posts/${postId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
+      .field('description', newPostData.description)
+      .attach('image', post.image)
+
+    expect(response.body.message).toBe("it's not allowed to update the image, please create another post")
+    expect(response.status).toBe(400)
+  })
 })

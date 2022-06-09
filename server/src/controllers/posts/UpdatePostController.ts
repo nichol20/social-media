@@ -6,10 +6,11 @@ export class UpdatePostController {
 
     const { id } = req.params
     const { description } = req.body
+    const { author } = req
 
     try {
       const service = new UpdatePostService
-      const result = await service.execute(id, { description })
+      const result = await service.execute(id, { description }, author!.id)
 
       return res.status(200).json(result)
     } catch (error: any) {

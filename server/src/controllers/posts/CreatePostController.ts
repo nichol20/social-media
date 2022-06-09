@@ -4,16 +4,16 @@ import { CreatePostService } from "../../services/posts/CreatePostService";
 export class CreatePostController {
   async handle(req: Request, res: Response) {
 
-    const { description, author_id } = req.body
-    const { file } = req
+    const { description } = req.body
+    const { file, author } = req
 
-    if((!description && !file) || !author_id) return res.status(400).json({ message: 'missing data' })
+    if(!description && !file) return res.status(400).json({ message: 'missing data' })
 
     try {
       const service = new CreatePostService
       const result = await service.execute({
         description,
-        author_id,
+        author_id: author!.id,
         image_name: file?.filename
       })
 

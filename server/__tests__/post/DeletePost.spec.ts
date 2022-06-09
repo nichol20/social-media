@@ -1,21 +1,21 @@
-import { Db, MongoClient, ObjectID, ObjectId } from 'mongodb'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Create post", () => {
+describe("Delete post", () => {
   const userIds: string[] = []
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'createpost user test',
-    email: 'createpostuser@test.com',
-    password: 'createpostusertest123',
+    name: 'deletepost user test',
+    email: 'deletepostuser@test.com',
+    password: 'deletepostusertest123',
     image: '__tests__/test_image.png'
   }
   const post = {
-    description: 'create post test',
+    description: 'delete post test',
     image: '__tests__/test_image.png'
   }
 
@@ -56,47 +56,28 @@ describe("Create post", () => {
     })
   })
 
-  it("should create a post", async () => {
-    const { body: { insertedId } } = await request
+  it("should delete a post", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
       .attach('image', user.image)
 
-    userIds.push(insertedId)
-
-    const response = await request
-      .post('/posts')
-      .field('author_id', insertedId)
-      .field('description', post.description)
-      .attach('image', post.image)
-
-
-    const postsCollection = db.collection('posts')
-    const createdPost = await postsCollection.findOne({ _id: new ObjectId(response.body.insertedId) })
+    userIds.push(userId)
     
-    expect(createdPost?.description).toBe(post.description)
-    expect(createdPost?.author_id).toBe(insertedId)
-    expect(response.status).toBe(200)
-    expect(response.body).toHaveProperty('insertedId')
-  })
-
-  it("should get the error 'missing author id'", async () => {
-    const response = await request
+    const { body: { _id: postId } } = await request
       .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .field('author_id', userId)
       .field('description', post.description)
       .attach('image', post.image)
 
-    expect(response.body.message).toBe('missing author id')
-    expect(response.status).toBe(400)
-  })
-
-  it("should get the error 'missing data'", async () => {
     const response = await request
-      .post('/posts')
-      
-    expect(response.body.message).toBe('missing data')
-    expect(response.status).toBe(400)
+      .delete(`/posts/${postId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
+
+    expect(response.body.message).toBe('successfully deleted')
+    expect(response.status).toBe(200)
   })
 })

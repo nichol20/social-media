@@ -48,7 +48,10 @@ describe("Create user", () => {
       .field('password', user.password)
       .attach('image', user.image)
 
-    expect(response.body).toHaveProperty('insertedId')
+    expect(response.body).toHaveProperty('token')
+    expect(response.body.user.name).toBe(user.name)
+    expect(response.body.user.email).toBe(user.email)
+    expect(response.body.user).toHaveProperty('created_at')
     expect(response.status).toBe(200)
     
   })

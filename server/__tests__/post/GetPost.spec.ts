@@ -3,19 +3,19 @@ import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Delete post", () => {
+describe("Get post", () => {
   const userIds: string[] = []
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'deletepost user test',
-    email: 'deletepostuser@test.com',
-    password: 'deletepostusertest123',
+    name: 'getpost user test',
+    email: 'getpostuser@test.com',
+    password: 'getpostusertest123',
     image: '__tests__/test_image.png'
   }
   const post = {
-    description: 'delete post test',
+    description: 'get post test',
     image: '__tests__/test_image.png'
   }
 
@@ -56,34 +56,30 @@ describe("Delete post", () => {
     })
   })
 
-  it("should create a post", async () => {
-    const { body: { insertedId: userId } } = await request
+  it("should fetch a specific post", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
       .attach('image', user.image)
 
-    userIds.push(userId)
-    
-    const { body: { insertedId: postId } } = await request
+    userIds.push(userId) 
+
+    const { body: { _id: postId } } = await request
       .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('author_id', userId)
       .field('description', post.description)
       .attach('image', post.image)
 
     const response = await request
-      .delete(`/posts/${postId}`)
+      .get(`/posts/${postId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
 
-    expect(response.body.deletedCount).toBe(1)
+    expect(response.body.description).toBe(post.description)
+    expect(response.body).toHaveProperty('created_at')
     expect(response.status).toBe(200)
-  })
-
-  it("should not found the post", async () => {
-    const response = await request.delete(`/posts/62977b2dc2517038801e2183`)
-
-    expect(response.body.message).toBe('post not found')
-    expect(response.status).toBe(404)
   })
 
 })

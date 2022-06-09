@@ -10,19 +10,20 @@ interface Data {
 
 export class UpdateUserService {
   async execute(id: string, data: Data) {
-    const usersCollection = db.getDb().collection('users')
-    const user = await usersCollection.findOne({ _id: new ObjectId(id) })
+    // Find user in database
+    const userCollection = db.getDb().collection('users')
+    const user = await userCollection.findOne({ _id: new ObjectId(id) })
 
+    // case user not found
     if(!user) throw new Error('user not found')
 
-    if(!data.name) data.name = user.name
-    if(!data.email) data.email = user.email
-    if(!data.password) data.password = user.password
-    if(!data.image_name) data.image_name = user.image_name
-
-    return await usersCollection.updateOne(user, {
+    // Update user in database
+    await userCollection.updateOne(user, {
       $set: {
-        ...data
+        name: data.name ?? user.name,
+        email: data.email ?? user.email,
+        password: data.password ?? user.password,
+        image_name: data.image_name ?? user.image_name
       }
     })
   }

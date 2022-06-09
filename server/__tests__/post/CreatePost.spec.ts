@@ -1,25 +1,22 @@
-import { Db, MongoClient, ObjectID, ObjectId } from 'mongodb'
+import { Db, MongoClient, ObjectId } from 'mongodb'
 import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Update posts", () => {
+describe("Create post", () => {
   const userIds: string[] = []
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'updatepost user test',
-    email: 'updatepostuser@test.com',
-    password: 'updatepostusertest123',
+    name: 'createpost user test',
+    email: 'createpostuser@test.com',
+    password: 'createpostusertest123',
     image: '__tests__/test_image.png'
   }
   const post = {
-    description: 'update post test',
+    description: 'create post test',
     image: '__tests__/test_image.png'
-  }
-  const newPostData = {
-    description: 'updated post'
   }
 
   beforeAll(async () => {
@@ -59,8 +56,8 @@ describe("Update posts", () => {
     })
   })
 
-  it("should fetch a specific post", async () => {
-    const { body: { insertedId: userId } } = await request
+  it("should create a post", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
@@ -69,59 +66,35 @@ describe("Update posts", () => {
 
     userIds.push(userId)
 
-    const { body: { insertedId: postId } } = await request
+    const response = await request
       .post('/posts')
-      .field('author_id', userId)
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('description', post.description)
       .attach('image', post.image)
 
-
-    const response = await request
-      .patch(`/posts/${postId}`)
-      .field('description', newPostData.description)
-
-    const postsCollection = db.collection('posts')
-    const updatedPost = await postsCollection.findOne({ _id: new ObjectId(postId) })
-
-    expect(updatedPost?.description).toBe(newPostData.description)
-    expect(updatedPost).toHaveProperty('image_name')
-    expect(updatedPost).toHaveProperty('created_at')
+    const postCollection = db.collection('posts')
+    const createdPost = await postCollection.findOne({ _id: new ObjectId(response.body._id) })
+    
+    expect(createdPost?.description).toBe(post.description)
+    expect(createdPost?.author_id).toBe(userId)
     expect(response.status).toBe(200)
   })
 
-  it("should not update the image", async () => {
-    const { body: { insertedId: userId } } = await request
+  it("should get the error 'missing data'", async () => {
+    const { body: { token, user: { _id } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
       .attach('image', user.image)
 
-    userIds.push(userId)
+    userIds.push(_id)
 
-    const { body: { insertedId: postId } } = await request
+    const response = await request
       .post('/posts')
-      .field('author_id', userId)
-      .field('description', post.description)
-      .attach('image', post.image)
-    
-
-    const response = await request
-      .patch(`/posts/${postId}`)
-      .field('description', newPostData.description)
-      .attach('image', post.image)
-
-    expect(response.body.message).toBe("it's not allowed to update the image, please create another post")
+      .set({ 'Authorization': `Bearer ${token}` })
+      
+    expect(response.body.message).toBe('missing data')
     expect(response.status).toBe(400)
-  })
-
-  it("should not found the post", async () => {
-    const response = await request
-      .patch(`/posts/62977b2dc2517038801e2183`)
-      .field('description', newPostData.description)
-      .field('image', post.image)
-
-    expect(response.body.message).toBe('post not found')
-    expect(response.status).toBe(404)
   })
 })

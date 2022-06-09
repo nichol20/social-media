@@ -1,16 +1,22 @@
-import { Db, MongoClient } from 'mongodb'
+import { Db, MongoClient } from "mongodb"
 import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Get user", () => {
+describe("Get all users", () => {
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'get user test',
-    email: 'getuser@test.com',
-    password: 'getusertest123',
+    name: 'getall user test',
+    email: 'getalluser@test.com',
+    password: 'getallusertest123',
+    image: '__tests__/test_image.png'
+  }
+  const user2 = {
+    name: 'getall2 user test',
+    email: 'getall2user@test.com',
+    password: 'getall2usertest123',
     image: '__tests__/test_image.png'
   }
 
@@ -27,12 +33,12 @@ describe("Get user", () => {
   })
 
   afterAll(async () => {
-    await connection.close()
+    await connection.close();
 
     //Removing test images
     const filenames = fs.readdirSync(path.resolve('src/images/users'))
     filenames.forEach(file => {
-      if(file.includes(user.email)) {
+      if(file.includes(user.email) || file.includes(user2.email)) {
         fs.unlink(path.resolve('src/images/users', file), err => {
           if(err) console.log(err)
         })
@@ -40,21 +46,25 @@ describe("Get user", () => {
     })
   })
 
-  it("should fetch a specific user", async () => {
-    const { body: { insertedId }} = await request
+  it("should get all users", async () => {
+    const { body: { token } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
       .attach('image', user.image)
 
-    const response = await request.get(`/users/${insertedId}`)
-    
-    expect(response.status).toBe(200)
-    expect(response.body.name).toBe(user.name)
-    expect(response.body.email).toBe(user.email)
-    expect(response.body.password).toBe(user.password)
-    expect(response.body).toHaveProperty('created_at')
-    expect(response.body).toHaveProperty('image_name')
+    await request
+      .post('/users')
+      .field('name', user2.name)
+      .field('email', user2.email)
+      .field('password', user2.password)
+      .attach('image', user2.image)
+
+    const response = await request.get('/users')
+      .set({ 'Authorization': `Bearer ${token}` })
+
+    expect(response.body.length).toBe(2)
   })
+
 })

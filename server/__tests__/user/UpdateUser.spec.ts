@@ -10,7 +10,8 @@ describe("Update user", () => {
   const user = {
     name: 'update user test',
     email: 'updateuser@test.com',
-    password: 'updateusertest123'
+    password: 'updateusertest123',
+    image: '__tests__/test_image.png'
   }
   const newUserData = {
     name: 'newdata user test',
@@ -45,36 +46,44 @@ describe("Update user", () => {
   })
 
   it("should update a user", async () => {
-    const { body: { insertedId } } = await request
+    const { body: { token, user: { _id } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', '__tests__/test_image.png')
+      .attach('image', user.image)
 
     const response = await request
-      .patch(`/users/${insertedId}`)
+      .patch(`/users/${ _id }`)
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('name', newUserData.name)
       .field('email', newUserData.email)
       .field('password', newUserData.password)
-      .attach('image', '__tests__/test_image.png')
 
-    const usersCollection = db.collection('users')
-    const updatedUser =  await usersCollection.findOne({ _id: new ObjectId(insertedId) })
+    const userCollection = db.collection('users')
+    const updatedUser =  await userCollection.findOne({ _id: new ObjectId(_id) })
 
     expect(updatedUser?.name).toBe(newUserData.name)
     expect(updatedUser?.email).toBe(newUserData.email)
     expect(updatedUser?.password).toBe(newUserData.password)
-    expect(response.body.modifiedCount).toBe(1)
+    expect(response.body.message).toBe('successfully updated')
     expect(response.status).toBe(200)
   })
 
-  it("should not found the user", async () => {
+  it("should not have permission to update the user", async () => {
+    const { body: { token } } = await request
+      .post('/users')
+      .field('name', user.name)
+      .field('email', user.email)
+      .field('password', user.password)
+      .attach('image', user.image)
+
     const response = await request
       .patch(`/users/62977b2dc2517038801e2183`)
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('name', newUserData.name)
 
-    expect(response.body.message).toBe('user not found')
-    expect(response.status).toBe(404)
+      expect(response.body.message).toBe('you do not have permission to do this')
+      expect(response.status).toBe(403)
   })
 })

@@ -12,8 +12,8 @@ const postStorage = multer.diskStorage({
 
     if(req.method === 'PATCH') return callback(new Error("it's not allowed to update the image, please create another post"), '')
 
-    if(!req.body.author_id) callback(new Error('missing author id'), '')
-    else callback(null, `${req.body.author_id}-${Date.now()}-${file.originalname}`)
+    if(!req.author?.id) callback(new Error('missing author id'), '')
+    else callback(null, `${req.author?.id}-${Date.now()}-${file.originalname}`)
   }
 })
 
@@ -25,8 +25,8 @@ const userStorage = multer.diskStorage({
     let userEmail = req.body.email
 
     if(req.method === 'PATCH') {
-      const usersCollection = db.getDb().collection('users')
-      const user = await usersCollection.findOne({ _id: new ObjectId(req.params.id) })
+      const userCollection = db.getDb().collection('users')
+      const user = await userCollection.findOne({ _id: new ObjectId(req.params.id) })
 
       if(!user) return callback(new Error('user not found'), '')
       userEmail = user.email

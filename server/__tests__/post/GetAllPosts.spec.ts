@@ -1,21 +1,21 @@
-import { Db, MongoClient, ObjectID, ObjectId } from 'mongodb'
+import { Db, MongoClient} from 'mongodb'
 import path from 'path'
 import fs from 'fs'
 import supertest from 'supertest'
 
-describe("Get post", () => {
+describe("Get all posts", () => {
   const userIds: string[] = []
   let connection: MongoClient
   let db: Db
   const request = supertest('http://localhost:6000')
   const user = {
-    name: 'getpost user test',
-    email: 'getpostuser@test.com',
-    password: 'getpostusertest123',
+    name: 'getallposts user test',
+    email: 'getallpostsuser@test.com',
+    password: 'getallpostsusertest123',
     image: '__tests__/test_image.png'
   }
   const post = {
-    description: 'get post test',
+    description: 'get all posts test',
     image: '__tests__/test_image.png'
   }
 
@@ -56,28 +56,36 @@ describe("Get post", () => {
     })
   })
 
-  it("should fetch a specific post", async () => {
-    const { body: { insertedId: userId } } = await request
+  it("should get all posts", async () => {
+    const { body: { token, user: { _id: userId } } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
       .attach('image', user.image)
 
-    userIds.push(userId) 
+    userIds.push(userId)
 
-    const { body: { insertedId: postId } } = await request
+    await request
       .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
       .field('author_id', userId)
       .field('description', post.description)
       .attach('image', post.image)
 
-    const response = await request.get(`/posts/${postId}`)
+    await request
+      .post('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
+      .field('author_id', userId)
+      .field('description', post.description)
+      .attach('image', post.image)
 
-    expect(response.body.description).toBe(post.description)
-    expect(response.body).toHaveProperty('image_name')
-    expect(response.body).toHaveProperty('created_at')
-    expect(response.status).toBe(200)
+
+    const response = await request
+      .get('/posts')
+      .set({ 'Authorization': `Bearer ${token}` })
+
+    expect(response.body.length).toBe(2)
   })
 
 })

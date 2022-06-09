@@ -7,17 +7,17 @@ interface Data {
 }
 
 export class UpdatePostService {
-  async execute(id: string, data: Data) {
-    const postsCollection = db.getDb().collection('posts')
-    const post = await postsCollection.findOne({ _id: new ObjectId(id) })
+  async execute(id: string, data: Data, author_id: string) {
+    const postCollection = db.getDb().collection('posts')
+    const post = await postCollection.findOne({ _id: new ObjectId(id) })
 
     if(!post) throw new Error('post not found')
 
-    if(!data.description) data.description = post.description
+    if(author_id !== post.author_id) throw new Error('You do not have permission to do this')
 
-    return await postsCollection.updateOne(post, {
+    return await postCollection.updateOne(post, {
       $set: {
-        ...data
+        description: data.description ?? post.description
       }
     })
   }
