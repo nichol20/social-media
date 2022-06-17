@@ -6,7 +6,7 @@ interface User {
   name: string
   email: string
   password: string
-  image_name: string
+  image: string
 }
 
 export class CreateUserService {
@@ -22,12 +22,10 @@ export class CreateUserService {
     })
 
     const newUser = await userCollection.findOne({ _id: new ObjectId(insertedId) })
-    const { password, ...data } = newUser!
     
-    const token = jwt.sign({ userId: newUser?._id }, process.env.JWT_SECRET!)
+    const token = jwt.sign({}, process.env.JWT_SECRET!, { subject: String(newUser?._id), expiresIn: '1d' })
     return {
-      token,
-      user: data
+      token
     }
   }
 }

@@ -8,8 +8,8 @@ export class LoginService {
 
     if(!user) throw new Error('user not found')
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '1d' })
+    const token = jwt.sign({}, process.env.JWT_SECRET!, { subject: String(user._id), expiresIn: '1d' })
 
-    return { token, user } 
+    return { token } 
   }
 }

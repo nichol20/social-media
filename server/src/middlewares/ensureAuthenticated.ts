@@ -13,10 +13,9 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
   const [, token] = authorizationHeader.split(' ')
 
   try {
-    const decoded = <JwtPayload>jwt.verify(token, process.env.JWT_SECRET!)
+    const { sub } = <JwtPayload>jwt.verify(token, process.env.JWT_SECRET!)
 
-    
-    req.author = { id: decoded.userId }
+    req.author = { id: sub! }
 
     return next()
   } catch (error: any) {

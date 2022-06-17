@@ -1,10 +1,23 @@
 import type { AppProps } from 'next/app'
 
+import { AuthProvider } from '../Contexts/AuthContext'
+
 import '../styles/globals.css'
-import '../components/Header/style.css'
+import '../styles/login.css'
+import '../styles/register.css'
+
+import '../components/UserAvatar/style.css'
+import '../components/Feed/style.css'
+import '../components/NewPostInput/style.css'
+import '../components/Post/style.css'
+import '../components/MainHeader/style.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  )
 }
 
 export default MyApp

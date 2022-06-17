@@ -10,3 +10,22 @@
 body {
   min-width: 225px;
 }
+
+.social_media_app-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px;
+}
+ 
+textarea::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}

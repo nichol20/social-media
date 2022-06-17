@@ -1,0 +1,188 @@
+.social_media_app-register {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: lightgray;
+  gap: 10px;
+}
+
+.social_media_app-register > .social_media-logo {
+  color: #1877f2;
+  font-size: 3em;
+  font-weight: 800;
+  text-shadow: 2px 2px 2px rgba(69, 69, 69, 0.3);
+}
+
+.social_media_app-register > .carousel {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.social_media_app-register > .carousel > div {
+  width: 150px;
+  height: 8px;
+  background:rgba(69, 69, 69, 0.5);
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+
+}
+
+.social_media_app-register > .carousel > div.active {
+  background: #1877f2;
+}
+
+.social_media_app-register .register-interface {
+  position: relative;
+  overflow: hidden;
+  width: 400px;
+  height: 400px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.3);
+}
+
+.social_media_app-register .register-interface .steps-box {
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0px;
+  transition: .3s;
+}
+
+.social_media_app-register .register-interface .steps-box .step {
+  width: 400px;
+  height: 400px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field > label {
+  font-size: .875em;
+  font-weight: 300;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field > input {
+  width: 100%;
+  height: 30px;
+  border: 1px solid black;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1em;
+  font-weight: normal;
+  outline: none;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field > input:focus {
+  border: 2px solid blue;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field .confirm_password-mismatch_text {
+  font-size: .875em;
+  color: red;
+}
+
+.social_media_app-register .register-interface .steps-box .step .next-button,
+.social_media_app-register .register-interface .steps-box .step .register-button 
+{
+  padding: 8px 12px;
+  background: rgb(0, 218, 0);
+  color: #fff;
+  font-size: 1em;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: .3s;
+  width: 180px;
+  height: 40px;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.5);
+}
+
+.social_media_app-register .register-interface .steps-box .step .next-button:hover,
+.social_media_app-register .register-interface .steps-box .step .register-button:hover 
+{
+  background: green;
+}
+
+.social_media_app-register .register-interface .steps-box .step .next-button:disabled {
+  background: #dddddd;
+  cursor: default;
+  box-shadow: none;
+}
+
+.social_media_app-register .register-interface .steps-box .step .user_image-field {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
+}
+
+.social_media_app-register .register-interface .steps-box .step .user_image-field > .user_image-box {
+  border-radius: 100%;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social_media_app-register .register-interface .steps-box .step .user_image-field .user_image-input {
+  position: absolute;
+  top: 60px;
+  right: 140px;
+}
+
+.social_media_app-register .register-interface .steps-box .step .user_image-field .user_image-input .image-box {
+  padding: 4px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  background: lightgray;
+  border-radius: 100%;
+}
+
+.social_media_app-register .register-interface .steps-box .step .user_image-field .user_image-input > input {
+  display: none;
+}
+
+.social_media_app-register .register-interface .steps-box .step .register-button {
+  margin-top: 100px;
+}
+
+.social_media_app-register .register-interface .steps-box .step .back-button {
+  padding: 8px 12px;
+  font-size: 1em;
+  color: #fff;
+  background: rgb(248, 35, 35);
+  transition: .3s;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.social_media_app-register .register-interface .steps-box .step .back-button:hover {
+  background: red;
+}

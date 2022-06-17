@@ -3,7 +3,7 @@ import db from "../../db";
 
 export interface Post {
   description: string
-  image_name?: string
+  image?: string
   author_id: string
 }
 

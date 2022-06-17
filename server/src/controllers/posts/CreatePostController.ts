@@ -6,7 +6,7 @@ export class CreatePostController {
 
     const { description } = req.body
     const { file, author } = req
-
+    
     if(!description && !file) return res.status(400).json({ message: 'missing data' })
 
     try {
@@ -14,7 +14,7 @@ export class CreatePostController {
       const result = await service.execute({
         description,
         author_id: author!.id,
-        image_name: file?.filename
+        image: file ? `http://localhost:5000/images/posts/${file.filename}` : ''
       })
 
       return res.status(200).json(result)

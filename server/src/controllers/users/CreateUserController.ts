@@ -15,7 +15,7 @@ export class CreateUserController {
         name,
         email,
         password,
-        image_name: file.filename
+        image: `http://localhost:5000/images/users/${file.filename}`
       })
 
       return res.status(200).json(result)

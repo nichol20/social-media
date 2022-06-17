@@ -9,7 +9,7 @@ export class LoginController {
 
     try {
       const service = new LoginService
-      const result = service.execute(email, password)
+      const result = await service.execute(email, password)
 
       return res.status(200).json(result)
     } catch (error: any) {
