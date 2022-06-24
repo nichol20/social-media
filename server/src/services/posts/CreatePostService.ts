@@ -1,14 +1,14 @@
 import { ObjectId } from "mongodb";
 import db from "../../db";
 
-export interface Post {
+interface NewPost {
   description: string
   image?: string
   author_id: string
 }
 
 export class CreatePostService {
-  async execute(post: Post) {
+  async execute(post: NewPost) {
     const postCollection = db.getDb().collection('posts')
     const userCollection = db.getDb().collection('users')
     const user = await userCollection.findOne({ _id: new ObjectId(post.author_id) })
@@ -17,12 +17,15 @@ export class CreatePostService {
 
     const { insertedId } = await postCollection.insertOne({
       ...post,
+      comments: [],
       created_at: Date.now()
     })
 
+    user.posts.push(insertedId)
+
     await userCollection.updateOne(user, {
       $set: {
-        posts: user.posts.push(insertedId)
+        posts: user.posts 
       }
     })
 

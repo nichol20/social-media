@@ -91,9 +91,16 @@
   border: 2px solid blue;
 }
 
-.social_media_app-register .register-interface .steps-box .step .field .confirm_password-mismatch_text {
+.social_media_app-register .register-interface .steps-box .step .field .confirm_password-mismatch_text,
+.social_media_app-register .register-interface .steps-box .step .field .email_unavailable
+{
   font-size: .875em;
   color: red;
+}
+
+.social_media_app-register .register-interface .steps-box .step .field .email_available {
+  font-size: .875em;
+  color: rgb(0, 201, 0);
 }
 
 .social_media_app-register .register-interface .steps-box .step .next-button,

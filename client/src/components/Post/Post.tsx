@@ -1,24 +1,32 @@
-import React, { Dispatch, FormEvent, SetStateAction, useContext, useEffect, useState } from 'react'
+import React, { Dispatch, FormEvent, KeyboardEvent, SetStateAction, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import { UserAvatar } from '../UserAvatar/UserAvatar'
 import { PostData } from '../Feed/Feed'
 import { AuthContext, User } from '../../Contexts/AuthContext'
+import { Comment } from './Comment'
 import { http } from '../../utils/http'
+import { EditModal } from './EditModal'
+import { DeleteModal } from './DeleteModal'
+import { calculateLifetime } from '../../utils/timeStamp'
 
 import optionsIcon from '../../../public/options.svg'
-import happyIcon from '../../../public/happy.svg'
+import heartIcon from '../../../public/heart.svg'
+import commentIcon from '../../../public/chatbox-outline.svg'
+import shareIcon from '../../../public/arrow-redo-outline.svg'
 
 interface PostProps {
   post: PostData
-  setPosts: Dispatch<SetStateAction<PostData[]>>
+  setUpdatePosts: Dispatch<SetStateAction<boolean>>
 }
 
-export const Post = ({ post, setPosts }: PostProps) => {
+export const Post = ({ post, setUpdatePosts }: PostProps) => {
   const { user } = useContext(AuthContext)
   const [ showSubmenu, setShowSubmenu ] = useState(false)
+  const [ showComments, setShowComments ] = useState(false)
+  const [ userLiked, setUserLiked ] = useState(user!.likedPosts.includes(post._id))
   const [ author, setAuthor ] = useState<User>()
-  const [ newDescription, setNewDescription ] = useState(post.description)
+  const [ postLifetime, setPostLifetime ] = useState('')
 
   useEffect(() => {
     const fetchAuthor = async () => {
@@ -31,31 +39,52 @@ export const Post = ({ post, setPosts }: PostProps) => {
     }
 
     fetchAuthor()
+    setPostLifetime(calculateLifetime(post.created_at))
   }, [post, user])
 
-  const deletePost = async () => {
-    try {
-      await http.delete(`/posts/${post._id}`, {
-        headers: {
-          Authorization: `Bearer ${user!.token}`
-        }
-      })
-
-      setPosts(prevState => prevState.filter(p => p._id !== post._id))
-      closeDeleteModal()
-    } catch (error) {
-      console.log(error)
+  const handleLike = async () => {
+    if(!userLiked) {
+      try {
+        await http.post(`/posts/${post._id}/like`, undefined, {
+          headers: {
+            Authorization: `Bearer ${user!.token}`
+          }
+        })
+        setUserLiked(!userLiked)
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      try {
+        await http.delete(`/posts/${post._id}/like`, {
+          headers: {
+            Authorization: `Bearer ${user!.token}`
+          }
+        })
+        setUserLiked(!userLiked)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
-  const editPost = async (event: FormEvent) => {
-    event.preventDefault()
+  const submitComment = async (event: KeyboardEvent) => {
+    if(event.key === 'Enter') {
+      const input = event.target as HTMLInputElement
+      const message = input.value
 
-    await http.patch(`/posts/${post._id}`, { description: newDescription }, {
-      headers: {
-        Authorization: `Bearer ${user!.token}`
+      try {
+        await http.post(`/posts/${post._id}/comments`, { comment: message }, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`
+          }
+        })
+        input.value = ''
+        setUpdatePosts(prevState => !prevState)
+      } catch (error) {
+        console.log(error)
       }
-    })
+    }
   }
   
   const showDeleteModal = () => {
@@ -64,20 +93,10 @@ export const Post = ({ post, setPosts }: PostProps) => {
     setShowSubmenu(false)
   }
 
-  const closeDeleteModal = () => {
-    const deleteModal = (document.querySelector(`#deleteModal${post._id}`) as HTMLDivElement)
-    deleteModal.style.display = 'none'
-  }
-
   const showEditModal = () => {
     const editModal = (document.querySelector(`#editModal${post._id}`) as HTMLDivElement)
     editModal.style.display = 'flex'
     setShowSubmenu(false)
-  }
-
-  const closeEditModal = () => {
-    const editModal = (document.querySelector(`#editModal${post._id}`) as HTMLDivElement)
-    editModal.style.display = 'none'
   }
 
   return (
@@ -86,16 +105,16 @@ export const Post = ({ post, setPosts }: PostProps) => {
         <div className="information">
           <UserAvatar width='35px' height='35px' image={author?.image} />
           <span className='user_name'>{author?.name}</span>
-          <span className="creation_time">5 min ago</span>
+          <span className="creation_time">{postLifetime} ago</span>
         </div>
 
         {
           author?._id === user?._id && (
             <div className="options-box">
               <div className="image-box" onClick={() => setShowSubmenu(!showSubmenu)}>
-                <Image src={optionsIcon} alt=""/>
+                <Image src={optionsIcon} alt="options"/>
               </div>
-              <div className={`submenu-container ${showSubmenu && 'active'}`}>
+              <div className={`submenu-container ${showSubmenu ? 'active' : ''}`}>
                 <ul className="submenu-list">
                   <li onClick={showEditModal}>edit</li>
                   <li onClick={showDeleteModal} >delete</li>
@@ -115,49 +134,54 @@ export const Post = ({ post, setPosts }: PostProps) => {
               </div>
             )
           }
-      </div>
 
-      <div className="delete_post-modal" id={`deleteModal${post._id}`} >
-        <div className="warning-container">
-          <h2>Are you sure?</h2>
-          <span>this action is irreversible!</span>
-          <div className="actions-box">
-            <button className='cancel' onClick={closeDeleteModal}>Cancel</button>
-            <button className='delete' onClick={deletePost}>Delete</button>
-          </div>
+        <div className="actions-box">
+          <ul className="actions-list">
+            <li className="action" onClick={handleLike}>
+              <Image
+               src={heartIcon} 
+               alt='heart' 
+               width='25px' 
+               height='25px' 
+               className={`heart-icon ${userLiked ? 'active' : ''}`}
+              />
+              Like
+            </li>
+            <li className="action" onClick={() => setShowComments(!showComments)} >
+              <Image src={commentIcon} alt='comment' width='25px' height='25px' />
+              Comment
+            </li>
+            <li className="action">
+              <Image src={shareIcon} alt='share' width='25px' height='25px' />
+              Share
+            </li>
+          </ul>
         </div>
-      </div>
 
-      <div className="edit_post-modal" id={`editModal${post._id}`} >
-        <form className="container" onSubmit={editPost}>
-
-          <div className='main_content'>
-            <textarea
-             placeholder="What's in your mind ?"
-             name='description'
-             onChange={e => setNewDescription(e.target.value)} 
-             defaultValue={post.description}
-            />
-          </div>
-          
-          <div className="footer">
-            <ul className="options-list">
-              <li className="options-item">
-                <div className="image-box">
-                  <Image src={happyIcon} alt='happy icon' className='happy-icon'/>
-                </div>
-                <span>Feelings</span>
-              </li>
-            </ul>
-
-            <div className="actions">
-              <button className="cancel" onClick={closeEditModal} type='button'>Cancel</button>
-              <button className="edit" type='submit'>Edit</button>
+        {
+          showComments && (
+            <div className="comments" id={`comments${post._id}`}>
+              <div className="new_comment-box">
+                <UserAvatar width='25px' height='25px' image={author?.image} />
+                <input
+                type="text" 
+                placeholder='write a comment...' 
+                className='new_comment-input' 
+                onKeyDown={submitComment}
+              />
+              </div>
+              {
+                post.comments.map((comment, index) => {
+                  return <Comment comment={comment} key={index} />
+                })
+              }
             </div>
-          </div>
-
-        </form>
+          )
+        }
       </div>
+
+      <DeleteModal postId={post._id} setUpdatePosts={setUpdatePosts} />
+      <EditModal post={post} />
     </div>
   )
 }

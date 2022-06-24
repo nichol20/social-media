@@ -13,9 +13,12 @@ export class DeleteUserService {
     if(!user) throw new Error('user not found')
 
     // Delete image from directory
-    fs.unlink(path.resolve('src/images/users', user.image_name), err => {
-      if(err) console.log(err)
-    })
+    if(user.image.length > 0) {
+      //http://localhost:5000/images/users/[userImageName]
+      fs.unlink(path.resolve('src', user.image.split('000/')[1]), err => {
+        if(err) console.log(err)
+      })
+    }
 
     // Delete user from database
     await userCollection.deleteOne(user)

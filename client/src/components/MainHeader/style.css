@@ -4,7 +4,6 @@
   padding: 10px 20px;
   background: rgb(66, 66, 255);
   display: flex;
-  justify-content: space-between;
 }
 
 .main_header-component .social_media-logo {
@@ -23,6 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 220px;
 }
 
 .main_header-component .search_bar-box > input {
@@ -48,6 +48,7 @@
   position: relative;
   width: 35px;
   height: 35px;
+  margin-left: auto;
 }
 
 .main_header-component .main_header-options-box > .main_header-options-submenu-container {

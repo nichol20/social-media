@@ -18,14 +18,16 @@ export class CreateUserService {
     const { insertedId } = await userCollection.insertOne({
       ...user,
       created_at: Date.now(),
-      posts: []
+      posts: [],
+      likedPosts: []
     })
 
     const newUser = await userCollection.findOne({ _id: new ObjectId(insertedId) })
     
     const token = jwt.sign({}, process.env.JWT_SECRET!, { subject: String(newUser?._id), expiresIn: '1d' })
     return {
-      token
+      token,
+      user: newUser
     }
   }
 }

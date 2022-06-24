@@ -9,6 +9,7 @@ export interface User {
   image: string
   name: string
   posts: string[]
+  likedPosts: string[]
   token: string
   _id: string
 }

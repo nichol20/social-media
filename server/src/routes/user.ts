@@ -9,15 +9,20 @@ import { GetAllUsersController } from '../controllers/users/GetAllUsersControlle
 import { GetUserController } from '../controllers/users/GetUserController'
 import { UpdateUserController } from '../controllers/users/UpdateUserController'
 import { LoginController } from '../controllers/users/LoginController'
+import { CheckEmailStatusController } from '../controllers/users/CheckEmailStatusController'
 
 const userRoutes = express.Router()
 const uploadSingleImage = userUpload.single('image')
 
-userRoutes.post('/login', new LoginController().handle)
+/* --------------------------------- GET --------------------------------- */
 
 userRoutes.get('/users', ensureAuthenticated, new GetAllUsersController().handle)
 
 userRoutes.get('/users/:id', ensureAuthenticated, new GetUserController().handle)
+
+/* --------------------------------- POST --------------------------------- */
+
+userRoutes.post('/login', new LoginController().handle)
 
 userRoutes.post('/users', (req, res) => {
   uploadSingleImage(req, res, err => {
@@ -26,12 +31,18 @@ userRoutes.post('/users', (req, res) => {
   })
 })
 
+userRoutes.post('/users/check-email-status', new CheckEmailStatusController().handle)
+
+/* --------------------------------- PATCH --------------------------------- */
+
 userRoutes.patch('/users/:id', ensureAuthenticated, (req, res) => {
   uploadSingleImage(req, res, err => {
     if(err) return res.status(400).json({ message: err.message })
     new UpdateUserController().handle(req, res)
   })
 })
+
+/* --------------------------------- DELETE --------------------------------- */
 
 userRoutes.delete('/users/:id', ensureAuthenticated, new DeleteUserController().handle)
 

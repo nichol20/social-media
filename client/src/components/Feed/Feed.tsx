@@ -7,10 +7,18 @@ import defaultImage from '../../../public/default.png'
 import { StaticImageData } from 'next/image'
 import { AuthContext } from '../../Contexts/AuthContext'
 
+export interface Comment {
+  author_id: string
+  message: string
+  created_at: number
+  id: string
+}
+
 export interface PostData {
   description: string
   image?: string
   author_id: string
+  comments: Comment[]
   created_at: number
   _id: string
 }
@@ -44,8 +52,8 @@ export const Feed = ({ query }: FeedProps) => {
       <NewPostInput setUpdatePosts={setUpdatePosts} />
       {
         posts.map(post => {
-          if(post.description.includes(query)) {
-            return <Post key={post._id} post={post} setPosts={setPosts} />
+          if(post.description.toLocaleLowerCase().includes(query)) {
+            return <Post key={post._id} post={post} setUpdatePosts={setUpdatePosts} />
           }
         })
       }

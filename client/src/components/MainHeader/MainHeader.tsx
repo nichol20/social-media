@@ -18,7 +18,11 @@ export const MainHeader = ({ setQuery }: MainHeaderProps) => {
       <Link href='/'><a className='social_media-logo'>Social Media</a></Link>
 
       <div className='search_bar-box'>
-        <input type='text' placeholder='search for post' onChange={e => setQuery(e.target.value)} />
+        <input
+         type='text' 
+         placeholder='search for post' 
+         onChange={e => setQuery(e.target.value.toLocaleLowerCase())} 
+        />
         <div className='image-box'>
           <Image src={searchIcon} alt='search icon'/>
         </div>

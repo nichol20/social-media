@@ -5,6 +5,7 @@ import { FormEvent, useContext, useEffect, useState } from 'react'
 import defaultImage from '../../public/default.png'
 import pencilIcon from '../../public/pencil.svg'
 import { AuthContext } from '../Contexts/AuthContext'
+import { http } from '../utils/http'
 
 const Register: NextPage = () => {
   const { signUp } = useContext(AuthContext)
@@ -15,6 +16,7 @@ const Register: NextPage = () => {
   const [ confirmPasswordFocused, setConfirmPasswordFocused ] = useState(false)
   const [ disableNextButton, setDisableNextButton ] = useState(true)
   const [ userImage, setUserImage ] = useState(defaultImage.src)
+  const [ emailExists, setEmailExists ] = useState(false)
   
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -41,12 +43,28 @@ const Register: NextPage = () => {
       && password.length > 0
       && confirmPassword.length > 0
       && password === confirmPassword
+      && emailExists === false
     ) {
       setDisableNextButton(false)
     } else {
       setDisableNextButton(true)
     }
-  }, [ confirmPassword, email, name, password ])
+  }, [ confirmPassword, email, name, password, emailExists ])
+
+  useEffect(() => {
+    const checkEmailStatus = async () => {
+      try {
+        const { data: { emailStatus } } = await http.post('/users/check-email-status', { email })
+
+        if(emailStatus === 'registered') setEmailExists(true)
+        else setEmailExists(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    checkEmailStatus()
+  }, [ email ])
 
   return (
     <div className='social_media_app-register'>
@@ -67,6 +85,19 @@ const Register: NextPage = () => {
             <div className='field'>
               <label htmlFor='email'>Email</label>
               <input type='text' name='email' id='email' required onChange={e => setEmail(e.target.value)} />
+              {
+                emailExists 
+                ? (
+                  <span className="email_unavailable">
+                    Email already exists
+                  </span>
+                ) 
+                : email.length > 0 && (
+                  <span className="email_available">
+                    Email available
+                  </span>
+                )
+              }
             </div>
 
             <div className='field'>

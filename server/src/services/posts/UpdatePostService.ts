@@ -15,7 +15,7 @@ export class UpdatePostService {
 
     if(author_id !== post.author_id) throw new Error('You do not have permission to do this')
 
-    return await postCollection.updateOne(post, {
+    await postCollection.updateOne(post, {
       $set: {
         description: data.description ?? post.description
       }

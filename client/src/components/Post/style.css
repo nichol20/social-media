@@ -26,6 +26,12 @@
 .post-component > .header > .information .user_name {
   font-size: 1em;
   font-weight: 500;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.post-component > .header > .information .user_name:hover {
+  border-bottom: 1px solid black;
 }
 
 .post-component > .header > .information .creation_time {
@@ -107,6 +113,119 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
+}
+
+.post-component > .content > .actions-box {
+  border-top: 1px solid #444;
+  margin-top: 20px;
+}
+
+.post-component > .content > .actions-box > .actions-list {
+  display: flex;
+  gap: 60px;
+  margin-top: 10px;
+  list-style: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-component > .content > .actions-box > .actions-list > .action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 8px;
+  transition: .3s;
+  user-select: none;
+  font-size: .875em;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.post-component > .content > .actions-box > .actions-list > .action:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.post-component > .content > .actions-box > .actions-list > .action .heart-icon.active {
+  transition: .3s;
+}
+.post-component > .content > .actions-box > .actions-list > .action .heart-icon.active {
+  filter: invert(10%) sepia(96%) saturate(7285%) hue-rotate(1deg) brightness(112%) contrast(109%);
+}
+
+/* Comments */
+.post-component > .content > .comments {
+  border-top: 1px solid #444;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px;
+  gap: 20px;
+}
+
+.post-component > .content > .comments .new_comment-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.post-component > .content > .comments .new_comment-box .new_comment-input {
+  margin-left: 10px;
+  width: 90%;
+  border-radius: 20px;
+  outline: none;
+  border: none;
+  padding: 8px 14px;
+  background:rgba(160, 160, 160, 0.5);
+}
+
+.post-component > .content > .comments .comment .main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+
+.post-component > .content > .comments .comment .main .content {
+  background: rgba(160, 160, 160, 0.5);
+  padding: 8px 14px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 90%;
+}
+
+.post-component > .content > .comments .comment .main .content .author_name {
+  font-weight: 500;
+  font-size: 1em;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0);
+  width: fit-content;
+}
+
+.post-component > .content > .comments .comment .main .content .author_name:hover {
+  border-bottom: 1px solid black;
+}
+
+.post-component > .content > .comments .comment .main .content .message {
+  font-weight: 400;
+  font-size: .875em;
+}
+
+.post-component > .content > .comments .comment .footer {
+  display: flex;
+  padding-left: 40px;
+}
+
+.post-component > .content > .comments .comment .footer .creation_time {
+  font-size: .875em;
+  font-weight: 400;
 }
 
 /* Delete modal */
