@@ -74,11 +74,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
       const message = input.value
 
       try {
-        await http.post(`/posts/${post._id}/comments`, { comment: message }, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`
-          }
-        })
+        await http.post(`/posts/${post._id}/comments`, { comment: message })
         input.value = ''
         setUpdatePosts(prevState => !prevState)
       } catch (error) {
