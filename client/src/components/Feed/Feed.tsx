@@ -16,6 +16,7 @@ export interface Comment {
 
 export interface PostData {
   description: string
+  feeling: string
   image?: string
   author_id: string
   comments: Comment[]

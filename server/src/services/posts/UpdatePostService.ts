@@ -3,7 +3,7 @@ import db from "../../db";
 
 interface Data {
   description?: string
-  image_name?: string
+  feeling?: string
 }
 
 export class UpdatePostService {
@@ -17,7 +17,8 @@ export class UpdatePostService {
 
     await postCollection.updateOne(post, {
       $set: {
-        description: data.description ?? post.description
+        description: data.description ?? post.description,
+        feeling: data.feeling ?? post.feeling
       }
     })
   }

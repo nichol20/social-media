@@ -9,19 +9,27 @@ import { http } from '../utils/http'
 
 const Register: NextPage = () => {
   const { signUp } = useContext(AuthContext)
-  const [ password, setPassword ] = useState('')
-  const [ confirmPassword, setConfirmPassword ] = useState('')
   const [ name, setName ] = useState('')
   const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
+  const [ confirmPassword, setConfirmPassword ] = useState('')
+  const [ userImage, setUserImage ] = useState(defaultImage.src)
   const [ confirmPasswordFocused, setConfirmPasswordFocused ] = useState(false)
   const [ disableNextButton, setDisableNextButton ] = useState(true)
-  const [ userImage, setUserImage ] = useState(defaultImage.src)
   const [ emailExists, setEmailExists ] = useState(false)
-  
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const form = (document.querySelector('#register-form') as HTMLFormElement)
     const formData = new FormData(form)
+
+    if(userImage === defaultImage.src) {
+      formData.delete('image')
+
+      const blobImage = await fetch(defaultImage.src).then(response => response.blob())
+    
+      formData.append('image', blobImage)
+    }
 
     await signUp(formData)
   }

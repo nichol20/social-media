@@ -1,4 +1,4 @@
-import React, { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
+import React, { Dispatch, FormEvent, SetStateAction, useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 
 import { UserAvatar } from '../UserAvatar/UserAvatar'
@@ -7,7 +7,7 @@ import { AuthContext } from '../../Contexts/AuthContext'
 
 import imagesIcon from '../../../public/images.svg'
 import happyIcon from '../../../public/happy.svg'
-import { PostData } from '../Feed/Feed'
+import { FeelingsPicker } from '../FeelingsPicker/FeelingsPicker'
 
 interface NewPostInputProps {
   setUpdatePosts: Dispatch<SetStateAction<boolean>>
@@ -16,11 +16,15 @@ interface NewPostInputProps {
 export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
   const { user } = useContext(AuthContext)
   const [ postImage, setPostImage ] = useState('')
+  const [ feeling, setFeeling ] = useState('')
+  const [ feelingText, setFeelingText ] = useState('')
+  const feelingPickerEl = useRef<HTMLDivElement>(null)
   
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     const form = (document.querySelector('.new_post_input-component') as HTMLFormElement)
     const formData = new FormData(form)
+    formData.append('feeling', feeling)
 
     try {
       await http.post('/posts', formData, {
@@ -39,11 +43,24 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
     }
   }
 
+  useEffect(() => {
+    if(feeling.length > 0) {
+      setFeelingText(`is ${(feeling.split(' ')[0])} feeling ${feeling.split(' ')[1]}`)
+    }
+  }, [ feeling ])
+
+  const showFeelingsPicker = () => {
+    if(feelingPickerEl.current !== null) feelingPickerEl.current.style.display = 'flex'
+  }
+
   return (
     <form className='new_post_input-component' onSubmit={handleSubmit}>
       <div className="main_content">
         <UserAvatar width='50px' height='50px' image={user!.image} />
-        <textarea placeholder="What's in your mind ?" name='description' id='descriptionTextarea' />
+        <div>
+          <span>{`${user?.name} ${feelingText}`}</span>
+          <textarea placeholder="What's in your mind ?" name='description' id='descriptionTextarea' />
+        </div>
       </div>
 
 
@@ -73,7 +90,7 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
              onChange={e => setPostImage(URL.createObjectURL(e.target.files![0]))}
             />
           </label>
-          <li className="options-item">
+          <li className="options-item" onClick={showFeelingsPicker}>
             <div className="image-box">
               <Image src={happyIcon} alt='happy icon' className='happy-icon'/>
             </div>
@@ -83,6 +100,7 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
 
         <button className="share-button" type='submit'>Share</button>
       </div>
+      <FeelingsPicker feelingPickerRef={feelingPickerEl} setFeeling={setFeeling}/>
     </form>
   )
 }

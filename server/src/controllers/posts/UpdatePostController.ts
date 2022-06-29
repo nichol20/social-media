@@ -5,12 +5,12 @@ export class UpdatePostController {
   async handle(req: Request, res: Response) {
 
     const { id } = req.params
-    const { description } = req.body
+    const { description, feeling } = req.body
     const { author } = req
 
     try {
       const service = new UpdatePostService
-      await service.execute(id, { description }, author!.id)
+      await service.execute(id, { description, feeling }, author!.id)
 
       return res.status(200).json({ message: 'user updated successfully' })
     } catch (error: any) {

@@ -1,9 +1,11 @@
 .main_header-component {
+  position: relative;
   width: 100%;
   height: 60px;
   padding: 10px 20px;
   background: rgb(66, 66, 255);
   display: flex;
+  justify-content: space-between;
 }
 
 .main_header-component .social_media-logo {
@@ -15,14 +17,19 @@
 }
 
 .main_header-component .search_bar-box {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
   border-radius: 20px;
   padding: 8px 16px;
   width: 500px;
+  height: 40px;
   background: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 220px;
 }
 
 .main_header-component .search_bar-box > input {
@@ -48,7 +55,6 @@
   position: relative;
   width: 35px;
   height: 35px;
-  margin-left: auto;
 }
 
 .main_header-component .main_header-options-box > .main_header-options-submenu-container {
@@ -57,7 +63,7 @@
   min-height: 200px;
   border-radius: 8px;
   padding: 15px;
-  background: lightgray;
+  background: #fff;
   top: 30px;
   left: -100px;
   transition: .3s;

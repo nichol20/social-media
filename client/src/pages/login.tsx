@@ -1,24 +1,36 @@
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { FormEvent, useContext } from 'react'
+import { FormEvent, useContext, useState } from 'react'
+
 import { AuthContext } from '../Contexts/AuthContext'
 
 const Login: NextPage = () => {
   const { signIn } = useContext(AuthContext)
+  const [ invalidCredentials, setInvalidCredentials ] = useState(false)
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     const email = (document.querySelector('#email') as HTMLInputElement).value
     const password = (document.querySelector('#password') as HTMLInputElement).value
 
-    await signIn({ email, password })
+    try {
+      await signIn({ email, password })
+    } catch (error: any) {
+      if(error.response.data.message === 'user not found') {
+        setInvalidCredentials(true)
+      }
+    }
   }
 
   return (
     <div className='social_media_app-login'>
       <h1 className="social_media-logo">Social Media</h1>
       <form className="login-interface" onSubmit={handleSubmit}>
+        {
+          invalidCredentials && (
+            <span className='invalid_credentials-error'>Invalid Credentials</span>
+          )
+        }
         <div className="field">
           <label htmlFor="email">Email</label>
           <input type="text" id='email'/>

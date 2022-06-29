@@ -1,4 +1,4 @@
-import React, { FormEvent, useContext, useState } from 'react'
+import React, { FormEvent, useContext, useRef, useState } from 'react'
 
 import { AuthContext } from '../../Contexts/AuthContext'
 import { http } from '../../utils/http'
@@ -6,6 +6,7 @@ import { PostData } from '../Feed/Feed'
 
 import happyIcon from '../../../public/happy.svg'
 import Image from 'next/image'
+import { FeelingsPicker } from '../FeelingsPicker/FeelingsPicker'
 
 interface EditModalProps {
   post: PostData
@@ -14,15 +15,24 @@ interface EditModalProps {
 export const EditModal = ({ post }: EditModalProps) => {
   const { user } = useContext(AuthContext)
   const [ newDescription, setNewDescription ] = useState(post.description)
+  const [ newFeeling, setNewFeeling ] = useState(post.feeling)
+  const feelingPickerEl = useRef<HTMLDivElement>(null)
 
   const editPost = async (event: FormEvent) => {
     event.preventDefault()
 
-    await http.patch(`/posts/${post._id}`, { description: newDescription }, {
+    await http.patch(`/posts/${post._id}`, {
+       description: newDescription,
+       feeling: newFeeling
+      }, {
       headers: {
-        Authorization: `Bearer ${user!.token}`
+        Authorization: `Bearer ${user?.token}`
       }
     })
+  }
+
+  const showFeelingsPicker = () => {
+    if(feelingPickerEl.current !== null) feelingPickerEl.current.style.display = 'flex'
   }
 
   const closeEditModal = () => {
@@ -31,8 +41,18 @@ export const EditModal = ({ post }: EditModalProps) => {
   }
 
   return (
-    <div className="edit_post-modal" id={`editModal${post._id}`} >
+    <div className="edit_post-modal" id={`editModal${post._id}`}>
         <form className="container" onSubmit={editPost}>
+          <div className="header">
+            <span className="author_name">{user?.name}</span>
+            {
+              newFeeling.length > 0 && (
+                <span className="feeling_text">
+                  {`is ${newFeeling.split(' ')[0]} feeling ${newFeeling.split(' ')[1]}`}
+                </span>
+              )
+            }
+          </div>
 
           <div className='main_content'>
             <textarea
@@ -45,7 +65,7 @@ export const EditModal = ({ post }: EditModalProps) => {
           
           <div className="footer">
             <ul className="options-list">
-              <li className="options-item">
+              <li className="options-item" onClick={showFeelingsPicker}>
                 <div className="image-box">
                   <Image src={happyIcon} alt='happy icon' className='happy-icon'/>
                 </div>
@@ -58,7 +78,7 @@ export const EditModal = ({ post }: EditModalProps) => {
               <button className="edit" type='submit'>Edit</button>
             </div>
           </div>
-
+          <FeelingsPicker feelingPickerRef={feelingPickerEl} setFeeling={setNewFeeling} />
         </form>
       </div>
   )

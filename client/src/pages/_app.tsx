@@ -11,6 +11,7 @@ import '../components/Feed/style.css'
 import '../components/NewPostInput/style.css'
 import '../components/Post/style.css'
 import '../components/MainHeader/style.css'
+import '../components/FeelingsPicker/style.css'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

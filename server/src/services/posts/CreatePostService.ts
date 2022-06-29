@@ -3,6 +3,7 @@ import db from "../../db";
 
 interface NewPost {
   description: string
+  feeling: string
   image?: string
   author_id: string
 }

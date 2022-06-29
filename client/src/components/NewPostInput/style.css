@@ -2,9 +2,9 @@
   padding: 15px;
   width: 500px;
   min-height: 180px;
-  background: lightgray;
+  background: #fff;
   border-radius: 8px;
-  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -20,13 +20,23 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
 }
 
-.new_post_input-component > .main_content > textarea {
+.new_post_input-component > .main_content > div {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+}
+
+.new_post_input-component > .main_content > div > span {
+  margin-left: 10px;
+}
+
+.new_post_input-component > .main_content > div > textarea {
   padding: 8px 12px;
   outline: none;
   border: none;
   background-color: transparent;
-  height: 100px;
-  width: 380px;
+  height: 80px;
+  width: auto;
   font-size: .875em;
   resize: none;
 }

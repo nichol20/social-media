@@ -27,6 +27,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
   const [ userLiked, setUserLiked ] = useState(user!.likedPosts.includes(post._id))
   const [ author, setAuthor ] = useState<User>()
   const [ postLifetime, setPostLifetime ] = useState('')
+  const feelingText = `is ${post.feeling.split(' ')[0]} feeling ${post.feeling.split(' ')[1]}`
 
   useEffect(() => {
     const fetchAuthor = async () => {
@@ -74,7 +75,11 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
       const message = input.value
 
       try {
-        await http.post(`/posts/${post._id}/comments`, { comment: message })
+        await http.post(`/posts/${post._id}/comments`, { comment: message }, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`
+          }
+        })
         input.value = ''
         setUpdatePosts(prevState => !prevState)
       } catch (error) {
@@ -101,6 +106,11 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
         <div className="information">
           <UserAvatar width='35px' height='35px' image={author?.image} />
           <span className='user_name'>{author?.name}</span>
+          {
+            post.feeling.length > 0 && (
+              <span className="feeling_text">{feelingText}</span>
+            )
+          }
           <span className="creation_time">{postLifetime} ago</span>
         </div>
 
@@ -158,7 +168,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
           showComments && (
             <div className="comments" id={`comments${post._id}`}>
               <div className="new_comment-box">
-                <UserAvatar width='25px' height='25px' image={author?.image} />
+                <UserAvatar width='25px' height='25px' image={user?.image} />
                 <input
                 type="text" 
                 placeholder='write a comment...' 

@@ -42,17 +42,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [ user, setUser ] = useState<User | null>(null)
 
   const signIn: SignIn = async ({ email, password }) => {
-    try {
-      const { data } = await http.post('/login', {
-        email,
-        password
-      })
-    
-      router.push('/')
-      Cookies.set('token', data.token)
-    } catch (error) {
-      console.log(error)
-    }
+    const { data } = await http.post('/login', {
+      email,
+      password
+    })
+  
+    router.push('/')
+    Cookies.set('token', data.token)
   }
   
   const signUp: SignUp = async formData => {

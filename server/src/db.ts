@@ -1,7 +1,7 @@
 import { Db, MongoClient } from "mongodb";
 import { PORT } from "./server";
 
-const uri = `mongodb://mongo:27017/`
+const uri = `mongodb://127.0.0.1:27017/`
 const client = new MongoClient(uri)
 
 type Callback = (err?: any) => void
