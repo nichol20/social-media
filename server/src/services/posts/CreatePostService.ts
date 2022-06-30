@@ -4,7 +4,8 @@ import db from "../../db";
 interface NewPost {
   description: string
   feeling: string
-  image?: string
+  image: string
+  image_path: string
   author_id: string
 }
 

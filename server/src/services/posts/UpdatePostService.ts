@@ -21,5 +21,9 @@ export class UpdatePostService {
         feeling: data.feeling ?? post.feeling
       }
     })
+
+    return { 
+      message: 'user successfully updated' 
+    }
   }
 }

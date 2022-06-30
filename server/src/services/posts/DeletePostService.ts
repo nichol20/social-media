@@ -12,14 +12,16 @@ export class DeletePostService {
 
     if(author_id !== post.author_id) throw new Error('You do not have permission to do this')
 
-    if(post.image.length > 0)  {
-      //http://localhost:5000/images/posts/[postImageName]
-      fs.unlink(path.resolve('src', post.image.split('000/')[1]), err => {
+    if(post.image_path > 0)  {
+      fs.unlink(path.resolve('src', post.image_path), err => {
         if(err) console.log(err)
       })
     }
 
-
     await postCollection.deleteOne(post)
+
+    return { 
+      message: 'successfully deleted'
+    }
   }
 }

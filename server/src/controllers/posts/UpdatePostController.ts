@@ -10,9 +10,9 @@ export class UpdatePostController {
 
     try {
       const service = new UpdatePostService
-      await service.execute(id, { description, feeling }, author!.id)
+      const result = await service.execute(id, { description, feeling }, author!.id)
 
-      return res.status(200).json({ message: 'user updated successfully' })
+      return res.status(200).json(result)
     } catch (error: any) {
       if(error.message === 'post not found') return res.status(404).json({ message: error.message })
       return res.status(400).json({ message: error.message })

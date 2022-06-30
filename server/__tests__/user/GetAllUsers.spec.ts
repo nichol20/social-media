@@ -1,12 +1,6 @@
-import { Db, MongoClient } from "mongodb"
-import path from 'path'
-import fs from 'fs'
-import supertest from 'supertest'
+import { request } from '../../tests/setup'
 
 describe("Get all users", () => {
-  let connection: MongoClient
-  let db: Db
-  const request = supertest('http://localhost:6000')
   const user = {
     name: 'getall user test',
     email: 'getalluser@test.com',
@@ -19,32 +13,6 @@ describe("Get all users", () => {
     password: 'getall2usertest123',
     image: '__tests__/test_image.png'
   }
-
-  beforeAll(async () => {
-    connection = await MongoClient.connect(`mongodb://localhost:27017`)
-    db = connection.db('social_media_test')
-  })
-
-  afterEach(async () => {
-    const collections = await db.collections()
-    for(let collection of collections) {
-      await collection.deleteMany({})
-    }
-  })
-
-  afterAll(async () => {
-    await connection.close();
-
-    //Removing test images
-    const filenames = fs.readdirSync(path.resolve('src/images/users'))
-    filenames.forEach(file => {
-      if(file.includes(user.email) || file.includes(user2.email)) {
-        fs.unlink(path.resolve('src/images/users', file), err => {
-          if(err) console.log(err)
-        })
-      }
-    })
-  })
 
   it("should get all users", async () => {
     const { body: { token } } = await request

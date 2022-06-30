@@ -13,9 +13,8 @@ export class DeleteUserService {
     if(!user) throw new Error('user not found')
 
     // Delete image from directory
-    if(user.image.length > 0) {
-      //http://localhost:5000/images/users/[userImageName]
-      fs.unlink(path.resolve('src', user.image.split('000/')[1]), err => {
+    if(user.image_path.length > 0) {
+      fs.unlink(path.resolve('src', user.image_path), err => {
         if(err) console.log(err)
       })
     }

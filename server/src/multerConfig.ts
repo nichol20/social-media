@@ -3,10 +3,12 @@ import { ObjectId } from 'mongodb'
 import multer, { FileFilterCallback } from 'multer'
 import path from 'path'
 import db from './db'
+import { PORT } from './server'
 
 const postStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, path.resolve('src/images/posts'))
+    if(PORT === '6000') callback(null, path.resolve('src/test_images/posts'))
+    else callback(null, path.resolve('src/images/posts'))
   },
   filename: async (req, file, callback) => {
 
@@ -19,7 +21,8 @@ const postStorage = multer.diskStorage({
 
 const userStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, path.resolve('src/images/users'))
+    if(PORT === '6000') callback(null, path.resolve('src/test_images/users'))
+    else callback(null, path.resolve('src/images/users'))
   },
   filename: async (req, file, callback) => {
     let userEmail = req.body.email

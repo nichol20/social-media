@@ -10,7 +10,7 @@ import { GetPostController } from '../controllers/posts/GetPostController'
 import { UpdatePostController } from '../controllers/posts/UpdatePostController'
 import { CreateCommentController } from '../controllers/posts/CreateCommentController'
 import { LikePostController } from '../controllers/posts/LikePostController'
-import { RemoveLikeController } from '../controllers/posts/RemoveLikeController'
+import { DeleteLikeController } from '../controllers/posts/DeleteLikeController'
 import { DeleteCommentController } from '../controllers/posts/DeleteCommentController'
 
 const postRoutes = express.Router()
@@ -48,7 +48,7 @@ postRoutes.patch('/posts/:id', ensureAuthenticated, (req, res) => {
 
 postRoutes.delete('/posts/:postId/comment/:commentId', ensureAuthenticated, new DeleteCommentController().handle)
 
-postRoutes.delete('/posts/:postId/like', ensureAuthenticated, new RemoveLikeController().handle)
+postRoutes.delete('/posts/:postId/like', ensureAuthenticated, new DeleteLikeController().handle)
 
 postRoutes.delete('/posts/:id', ensureAuthenticated, new DeletePostController().handle)
 

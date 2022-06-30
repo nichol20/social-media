@@ -11,9 +11,9 @@ export class DeletePostController {
 
     try {
       const service = new DeletePostService
-      await service.execute(id, author!.id)
+      const result = await service.execute(id, author!.id)
 
-      return res.status(200).json({ message: 'successfully deleted'})
+      return res.status(200).json(result)
     } catch (error: any) {
       if(error.message === 'post not found') return res.status(404).json({ message: error.message })
       console.log(error.message)

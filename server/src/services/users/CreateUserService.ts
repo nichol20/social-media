@@ -7,6 +7,7 @@ interface User {
   email: string
   password: string
   image: string
+  image_path: string
 }
 
 export class CreateUserService {

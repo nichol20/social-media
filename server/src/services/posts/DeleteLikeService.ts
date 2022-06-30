@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 import db from "../../db";
 
-export class RemoveLikeService {
+export class DeleteLikeService {
   async execute(postId: string, userId: string) {
     const posCollection = db.getDb().collection('posts')
     const userCollection = db.getDb().collection('users')
@@ -13,11 +13,14 @@ export class RemoveLikeService {
 
     const updatedLikedPosts = user.likedPosts.filter((id: string) => id !== postId)
 
-    console.log(updatedLikedPosts)
     await userCollection.updateOne(user, {
       $set: {
         likedPosts: updatedLikedPosts
       }
     })
+
+    return { 
+      message: 'like successfully removed' 
+    }
   }
 }

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { LikePostService } from "../../services/posts/LikePostService";
+import { DeleteLikeService } from "../../services/posts/DeleteLikeService";
 
-export class LikePostController {
+export class DeleteLikeController {
   async handle(req: Request, res: Response) {
-    const { author } = req
     const { postId } = req.params
+    const { author } = req
 
     try {
-      const service = new LikePostService
+      const service = new DeleteLikeService
       const result = await service.execute(postId, author!.id)
 
       return res.status(200).json(result)

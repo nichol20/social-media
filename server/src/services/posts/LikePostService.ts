@@ -16,5 +16,9 @@ export class LikePostService {
         likedPosts: [...user.likedPosts, postId]
       }
     })
+
+    return {
+      message: 'post successfully liked'
+    }
   }
 }

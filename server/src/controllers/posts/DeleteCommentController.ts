@@ -7,9 +7,9 @@ export class DeleteCommentController {
 
     try {
       const service = new DeleteCommentService
-      await service.execute(postId, commentId)
+      const result = await service.execute(postId, commentId)
 
-      return res.status(200).json({ message: 'comment deleted successfully' })
+      return res.status(200).json(result)
     } catch (error: any) {
       return res.status(400).json({ message: error.message })
     }

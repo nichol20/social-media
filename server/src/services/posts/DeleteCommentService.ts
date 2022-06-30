@@ -20,5 +20,9 @@ export class DeleteCommentService {
         comments: [...post.comments.filter((comment: Comment) => comment.id !== commentId)]
       }
     })
+
+    return { 
+      message: 'comment successfully deleted' 
+    }
   }
 }
