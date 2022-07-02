@@ -21,5 +21,7 @@ export class DeleteUserService {
 
     // Delete user from database
     await userCollection.deleteOne(user)
+
+    return { message: 'successfully deleted' }
   }
 }

@@ -12,11 +12,11 @@ export class CreateUserController {
     if(!email || !password || !name || !file) return res.status(400).json({ message: 'missing data' })
 
     if(PORT === '6000') {
-      imageLink = `http://localhost:5000/images/users/${file.filename}`
-      imagePath = `images/users/${file.filename}`
-    } else {
       imageLink = `http://localhost:5000/test_images/users/${file.filename}`
       imagePath = `test_images/users/${file.filename}`
+    } else {
+      imageLink = `http://localhost:5000/images/users/${file.filename}`
+      imagePath = `images/users/${file.filename}`
     }
     
     try {

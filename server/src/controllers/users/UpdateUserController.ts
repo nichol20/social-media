@@ -19,7 +19,7 @@ export class UpdateUserController {
         image_name: file?.filename
       })
 
-      res.status(200).json({ message: 'successfully updated'})
+      res.status(200).json(result)
     } catch (error: any) {
       if(error.message === 'user not found') return res.status(404).json({ message: error.message })
       res.status(400).json({ message: error.message })

@@ -16,8 +16,8 @@ export class CreatePostController {
       imageLink = `http://localhost:5000/test_images/posts/${file?.filename}`
       imagePath = `test_images/posts/${file?.filename}`
     } else {
-      imageLink = `http://localhost:5000/test_images/posts/${file?.filename}`
-      imagePath = `test_images/posts/${file?.filename}`
+      imageLink = `http://localhost:5000/images/posts/${file?.filename}`
+      imagePath = `images/posts/${file?.filename}`
     }
 
     try {

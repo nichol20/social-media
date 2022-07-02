@@ -26,5 +26,7 @@ export class UpdateUserService {
         image_name: data.image_name ?? user.image_name
       }
     })
+
+    return { message: 'successfully updated'}
   }
 }
