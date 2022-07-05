@@ -26,35 +26,65 @@ export interface PostData {
 
 interface FeedProps {
   query: string
+  postIds?: string[]
+  showNewPostInput?: boolean
 }
 
-export const Feed = ({ query }: FeedProps) => {
+export const Feed = ({ query, postIds, showNewPostInput=true }: FeedProps) => {
   const { user } = useContext(AuthContext)
   const [ posts, setPosts ] = useState<PostData[]>([])
   const [ updatePosts, setUpdatePosts ] = useState(false)
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const {data} = await http.get('/posts',{
-        headers: {
-          Authorization: `Bearer ${user!.token}`
-        }
-      })
+      try {
+        let data: PostData[]
 
-      data.reverse()
-      setPosts(data)
+        if(postIds) {
+          data = await Promise.all(postIds.map(async id => {
+            const response = await http.get(`/posts/${id}`, {
+              headers: {
+                Authorization: `Bearer ${user!.token}`
+              }
+            })
+            return response.data
+          }))
+
+        } else {
+          const response = await http.get('/posts',{
+            headers: {
+              Authorization: `Bearer ${user!.token}`
+            }
+          })
+
+          data = response.data
+        }
+
+        data.reverse()
+        setPosts(data)
+      } catch (error) {
+        console.log(error) 
+      }
     }
     
     fetchPosts()
   }, [ user, updatePosts ])
 
+  useEffect(() => {
+    if(postIds) refreshPosts()
+  }, [ postIds ])
+
+  const refreshPosts = () => {
+    setUpdatePosts(prevState => !prevState)
+  }
+
   return (
     <div className='feed-component'>
-      <NewPostInput setUpdatePosts={setUpdatePosts} />
+      { showNewPostInput && <NewPostInput setUpdatePosts={setUpdatePosts} /> }
       {
         posts.map(post => {
           if(post.description.toLocaleLowerCase().includes(query)) {
-            return <Post key={post._id} post={post} setUpdatePosts={setUpdatePosts} />
+            return <Post key={post._id} post={post} refreshPosts={refreshPosts} />
           }
         })
       }

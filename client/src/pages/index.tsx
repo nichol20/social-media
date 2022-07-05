@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react'
 import { Feed } from '../components/Feed/Feed'
 import { MainHeader } from '../components/MainHeader/MainHeader'
 import { AuthContext, User } from '../Contexts/AuthContext'
-import { http } from '../utils/http'
 import { withAuth } from '../utils/withAuth'
 
 interface HomeProps {
@@ -29,23 +28,8 @@ const Home: NextPage<HomeProps> = ({ userData }) => {
 
 export const getServerSideProps: GetServerSideProps = withAuth(
   async context => {
-    const { token } = context.req.cookies
-
-    const { sub: userId } = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString("utf8"))
-    
-    const { data } = await http.get(`/users/${userId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-
     return {
-      props: {
-        userData: {
-          ...data,
-          token
-        }
-      }
+      props: {}
     }
   }
 )

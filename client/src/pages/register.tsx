@@ -24,11 +24,11 @@ const Register: NextPage = () => {
     const formData = new FormData(form)
 
     if(userImage === defaultImage.src) {
-      formData.delete('image')
+      formData.delete('avatar')
 
       const blobImage = await fetch(defaultImage.src).then(response => response.blob())
     
-      formData.append('image', blobImage)
+      formData.append('avatar', blobImage)
     }
 
     await signUp(formData)
@@ -36,12 +36,19 @@ const Register: NextPage = () => {
 
   const handleNextButton = () => {
     const stepsBox = (document.querySelector('.steps-box') as HTMLDivElement)
-    stepsBox.style.left = '-400px'
+    const carouselDiv = (document.querySelector('.carousel') as HTMLDivElement) 
+    
+    stepsBox.style.left = '-400px';
+    (carouselDiv.children[0] as HTMLDivElement).style.background = 'rgba(0, 0, 0, 0.3)';
+    (carouselDiv.children[1] as HTMLDivElement).style.background = '#1877f2';
   }
 
   const handleBackButton = () => {
     const stepsBox = (document.querySelector('.steps-box') as HTMLDivElement)
-    stepsBox.style.left = '0'
+    const carouselDiv = (document.querySelector('.carousel') as HTMLDivElement) 
+    stepsBox.style.left = '0';
+    (carouselDiv.children[0] as HTMLDivElement).style.background = '#1877f2';
+    (carouselDiv.children[1] as HTMLDivElement).style.background = 'rgba(0, 0, 0, 0.3)';
   }
 
   useEffect(() => {
@@ -87,12 +94,26 @@ const Register: NextPage = () => {
           <div className='step'>
             <div className='field'>
               <label htmlFor='name'>Name</label>
-              <input type='text' name='name' id='name' required onChange={e => setName(e.target.value)} />
+              <input
+               type='text' 
+               name='name' 
+               id='name' 
+               data-testid='nameInput'
+               required 
+               onChange={e => setName(e.target.value)} 
+              />
             </div>
             
             <div className='field'>
               <label htmlFor='email'>Email</label>
-              <input type='text' name='email' id='email' required onChange={e => setEmail(e.target.value)} />
+              <input
+               type='email'
+               name='email' 
+               id='email' 
+               data-testid='emailInput'
+               required 
+               onChange={e => setEmail(e.target.value)} 
+              />
               {
                 emailExists 
                 ? (
@@ -114,6 +135,7 @@ const Register: NextPage = () => {
                type='password' 
                id='password' 
                name='password'
+               data-testid='passwordInput'
                required
                onChange={e => setPassword(e.target.value)}
               />
@@ -123,9 +145,11 @@ const Register: NextPage = () => {
               <label htmlFor='confirm_password'>Confirm Password</label>
               <input
                type='password' 
-               id='confirm_password' 
+               id='confirm_password'
+               data-testid='confirmPasswordInput'
                onChange={e => setConfirmPassword(e.target.value)}
-               required onFocus={() => setConfirmPasswordFocused(true)}
+               required 
+               onFocus={() => setConfirmPasswordFocused(true)}
               />
               {
                 (password !== confirmPassword && confirmPasswordFocused)
@@ -165,7 +189,7 @@ const Register: NextPage = () => {
                  id='userImage' 
                  type='file' 
                  accept='.png, .jpg, .jpeg'
-                 name='image'
+                 name='avatar'
                  onChange={e => setUserImage(URL.createObjectURL(e.target.files![0]))}
                 />
               </label>

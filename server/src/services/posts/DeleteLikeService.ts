@@ -11,11 +11,11 @@ export class DeleteLikeService {
     if(!post) throw new Error('post not found')
     if(!user) throw new Error('user not found')
 
-    const updatedLikedPosts = user.likedPosts.filter((id: string) => id !== postId)
+    const updatedLikedPosts = user.liked_posts.filter((id: string) => id !== postId)
 
     await userCollection.updateOne(user, {
       $set: {
-        likedPosts: updatedLikedPosts
+        liked_posts: updatedLikedPosts
       }
     })
 

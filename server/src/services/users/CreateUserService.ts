@@ -6,8 +6,8 @@ interface User {
   name: string
   email: string
   password: string
-  image: string
-  image_path: string
+  avatar: string
+  avatar_path: string
 }
 
 export class CreateUserService {
@@ -20,7 +20,9 @@ export class CreateUserService {
       ...user,
       created_at: Date.now(),
       posts: [],
-      likedPosts: []
+      liked_posts: [],
+      cover_photo: '',
+      cover_photo_path: ''
     })
 
     const newUser = await userCollection.findOne({ _id: new ObjectId(insertedId) })

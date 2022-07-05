@@ -1,0 +1,143 @@
+.social_media_app-user_page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: lightgray;
+  padding-bottom: 20px;
+}
+
+.social_media_app-user_page .profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.social_media_app-user_page .profile-container .profile_cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 100px;
+  width: 500px;
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box {
+  position: relative;
+  width: 640px;
+  height: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > .change-button {
+  position: absolute;
+  right: 20px;
+  top: 190px;
+  background: rgba(194, 194, 194, 0.8);
+  border-radius: 8px;
+  width: 150px;
+  height: 40px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+  font-size: 1em;
+  font-weight: 500;
+  transition: .3s;
+  border: none;
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > .change-button:hover {
+  background: rgb(233, 233, 233);
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > .cancel-button {
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  border-radius: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  transition: .2s;
+  right: 10px;
+  top: 10px;
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > .cancel-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > label {
+  position: absolute;
+  right: 20px;
+  top: 190px;
+  background: rgba(194, 194, 194, 0.8);
+  border-radius: 8px;
+  width: 170px;
+  height: 45px;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+  font-size: 1em;
+  font-weight: 500;
+  transition: .3s;
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > label:hover {
+  background: rgb(233, 233, 233);
+}
+
+.social_media_app-user_page .profile-container .profile_cover .banner_image-box > input {
+  display: none;
+}
+
+.social_media_app-user_page .profile-container .profile_cover > .main {
+  position: absolute;
+  top: 200px;
+  text-align: center;
+}
+
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box {
+  border-radius: 100%;
+  border: 3px solid #fff;
+}
+
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box > .cancel-button,
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box > .change-button,
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box > label {
+  position: absolute;
+  top: 70px;
+  right: 0px;
+  padding: 5px;
+  background: lightgray;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  border: none;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+}
+
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box > input {
+  display: none;
+}
+
+.social_media_app-user_page .profile-container .profile_cover > .main .profile_user_image-box > .cancel-button {
+  left: 0;
+  right: auto;
+  border: none;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+}

@@ -1,0 +1,180 @@
+.social_media_app-settings {
+  width: 100%;
+  min-height: 100vh;
+  background: lightgray;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.social_media_app-settings .settings-container {
+  background: #fff;
+  border-radius: 10px;
+  width: 1000px;
+  height: 500px;
+  padding: 40px;
+  display: flex;
+}
+
+.social_media_app-settings .settings-container .settings-nav {
+  padding: 10px;
+  padding-right: 20px;
+  border-right: 1px solid #444;
+  min-width: 220px;
+}
+
+.social_media_app-settings .settings-container .settings-nav > h1 {
+  font-size: 2em;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.social_media_app-settings .settings-container .settings-nav > .items {
+  list-style: none;
+}
+
+.social_media_app-settings .settings-container .settings-nav > .items > li {
+  border-radius: 4px;
+  width: 100%;
+  padding: 8px 14px;
+  transition: .2s;
+  cursor: pointer;
+  text-align: left;
+}
+
+.social_media_app-settings .settings-container .settings-nav > .items > li:hover {
+  background: rgba(0, 0, 0, 0.2)
+}
+
+.social_media_app-settings .settings-container .settings-nav > .items > li.delete {
+  color: rgb(255, 47, 47);
+}
+
+.social_media_app-settings .settings-container .settings-content {
+  padding: 10px;
+  padding-left: 30px;
+  width: 700px;
+}
+
+.social_media_app-settings .settings-container .settings-content > form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social_media_app-settings .settings-container .settings-content > form:nth-child(1) {
+  margin-bottom: 40px;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > h2 {
+  font-size: 1.5em;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > .field {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > .field > label {
+  font-size: 1em;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > .field > input {
+  border: 1px solid #666;
+  padding: 6px 12px;
+  outline: none;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > .field > input:focus,
+.social_media_app-settings .settings-container .settings-content > form > .field > input:hover
+{
+  border: 1px solid #000;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > button[type='submit'] {
+  padding: 8px 14px;
+  width: 140px;
+  align-self: center;
+  font-size: .750em;
+  border-radius: 6px;
+  border: 1px solid #fff;
+  background: rgb(48, 48, 255);
+  color: #fff;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > button[type='submit']:hover {
+  background: blue;
+}
+
+/* Delete account modal */
+
+.social_media_app-settings > .delete_account-modal {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container {
+  padding: 20px;
+  background: #fff;
+  border-radius: 20px;
+  height: 200px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > h2 {
+  font-size: 2em;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > span {
+  font-size: 1em;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box  {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box > button {
+  padding: 10px 14px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: .3s;
+  border-radius: 8px;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box > button.cancel {
+  background: rgb(255, 60, 60);
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box > button.cancel:hover {
+  background: red;
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box > button.delete {
+  background: rgb(58, 58, 255);
+}
+
+.social_media_app-settings > .delete_account-modal > .warning-container > .actions-box > button.delete:hover {
+  background: blue;
+}

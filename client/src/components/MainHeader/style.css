@@ -59,6 +59,7 @@
 
 .main_header-component .main_header-options-box > .main_header-options-submenu-container {
   position: absolute;
+  z-index: 10;
   width: 150px;
   min-height: 200px;
   border-radius: 8px;
@@ -80,6 +81,9 @@
 
 .main_header-options-submenu-container > .main_header-options-submenu-list {
   list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .main_header-options-submenu-container > .main_header-options-submenu-list li a {

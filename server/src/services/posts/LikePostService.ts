@@ -13,7 +13,7 @@ export class LikePostService {
 
     await userCollection.updateOne(user, {
       $set: {
-        likedPosts: [...user.likedPosts, postId]
+        liked_posts: [...user.liked_posts, postId]
       }
     })
 

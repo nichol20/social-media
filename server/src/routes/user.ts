@@ -12,7 +12,8 @@ import { LoginController } from '../controllers/users/LoginController'
 import { CheckEmailStatusController } from '../controllers/users/CheckEmailStatusController'
 
 const userRoutes = express.Router()
-const uploadSingleImage = userUpload.single('image')
+const uploadSingleImage = userUpload.single('avatar')
+const profileUpload = userUpload.fields([{ name: 'avatar', maxCount: 1 }, { name: 'cover_photo', maxCount: 1 }])
 
 /* --------------------------------- GET --------------------------------- */
 
@@ -36,7 +37,7 @@ userRoutes.post('/users/check-email-status', new CheckEmailStatusController().ha
 /* --------------------------------- PATCH --------------------------------- */
 
 userRoutes.patch('/users/:id', ensureAuthenticated, (req, res) => {
-  uploadSingleImage(req, res, err => {
+  profileUpload(req, res, err => {
     if(err) return res.status(400).json({ message: err.message })
     new UpdateUserController().handle(req, res)
   })

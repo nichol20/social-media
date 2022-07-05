@@ -6,17 +6,17 @@ export class CreateUserController {
   async handle(req: Request, res: Response) {
     const { email, password, name } = req.body
     const { file } = req
-    let imageLink: string
-    let imagePath: string
+    let avatarLink: string
+    let avatarPath: string
 
     if(!email || !password || !name || !file) return res.status(400).json({ message: 'missing data' })
 
     if(PORT === '6000') {
-      imageLink = `http://localhost:5000/test_images/users/${file.filename}`
-      imagePath = `test_images/users/${file.filename}`
+      avatarLink = `http://localhost:6000/test_images/users/${file.filename}`
+      avatarPath = `test_images/users/${file.filename}`
     } else {
-      imageLink = `http://localhost:5000/images/users/${file.filename}`
-      imagePath = `images/users/${file.filename}`
+      avatarLink = `http://localhost:5000/images/users/${file.filename}`
+      avatarPath = `images/users/${file.filename}`
     }
     
     try {
@@ -25,8 +25,8 @@ export class CreateUserController {
         name,
         email,
         password,
-        image: imageLink,
-        image_path: imagePath
+        avatar: avatarLink,
+        avatar_path: avatarPath
       })
 
       return res.status(200).json(result)

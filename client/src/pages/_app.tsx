@@ -5,6 +5,8 @@ import { AuthProvider } from '../Contexts/AuthContext'
 import '../styles/globals.css'
 import '../styles/login.css'
 import '../styles/register.css'
+import '../styles/settings.css'
+import '../styles/userpage.css'
 
 import '../components/UserAvatar/style.css'
 import '../components/Feed/style.css'

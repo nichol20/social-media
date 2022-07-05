@@ -4,10 +4,11 @@ import Image from 'next/image'
 import { UserAvatar } from '../UserAvatar/UserAvatar'
 import { http } from '../../utils/http'
 import { AuthContext } from '../../Contexts/AuthContext'
+import { FeelingsPicker } from '../FeelingsPicker/FeelingsPicker'
 
 import imagesIcon from '../../../public/images.svg'
 import happyIcon from '../../../public/happy.svg'
-import { FeelingsPicker } from '../FeelingsPicker/FeelingsPicker'
+import closeIcon from '../../../public/close.svg'
 
 interface NewPostInputProps {
   setUpdatePosts: Dispatch<SetStateAction<boolean>>
@@ -37,15 +38,20 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
       descriptionTextarea.value = ''
       setPostImage('')
       setUpdatePosts(prevState => !prevState)
-
+      setFeelingText('')
     } catch (error) {
       console.log(error)
     }
   }
 
+  const removeImage = () => {
+    setPostImage('')
+  }
+
   useEffect(() => {
     if(feeling.length > 0) {
       setFeelingText(`is ${(feeling.split(' ')[0])} feeling ${feeling.split(' ')[1]}`)
+      if(feeling === 'none') setFeelingText('')
     }
   }, [ feeling ])
 
@@ -56,7 +62,7 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
   return (
     <form className='new_post_input-component' onSubmit={handleSubmit}>
       <div className="main_content">
-        <UserAvatar width='50px' height='50px' image={user!.image} />
+        <UserAvatar userId={user!._id} width='50px' height='50px' image={user!.avatar} />
         <div>
           <span>{`${user?.name} ${feelingText}`}</span>
           <textarea placeholder="What's in your mind ?" name='description' id='descriptionTextarea' />
@@ -68,6 +74,9 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
         postImage.length > 0 && (
           <div className="post_image-example-box">
             <Image src={postImage} layout='fill' objectFit='contain' alt='post' />
+            <button className="remove_image-button" onClick={removeImage}>
+              <Image src={closeIcon} alt='close icon' width='20px' height='20px' />
+            </button>
           </div>
         )
       }

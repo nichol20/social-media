@@ -6,10 +6,13 @@ import { http } from "../utils/http"
 export interface User {
   created_at: number
   email: string
-  image: string
+  avatar: string
+  avatar_path: string
+  cover_photo: string
+  cover_photo_path: string
   name: string
   posts: string[]
-  likedPosts: string[]
+  liked_posts: string[]
   token: string
   _id: string
 }

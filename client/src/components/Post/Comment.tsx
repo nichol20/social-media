@@ -37,7 +37,7 @@ export const Comment = ({ comment }: CommentProps) => {
   return (
     <div className='comment'>
       <div className="main">
-        <UserAvatar image={author?.image} width='25px' height='25px' />
+        <UserAvatar userId={author!._id} image={author!.avatar} width='25px' height='25px' />
         <div className="content">
           <span className="author_name">{author?.name}</span>
           <span className="message">{comment.message}</span>

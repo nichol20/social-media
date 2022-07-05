@@ -23,11 +23,12 @@ export class CreatePostService {
       created_at: Date.now()
     })
 
-    user.posts.push(insertedId)
-
     await userCollection.updateOne(user, {
       $set: {
-        posts: user.posts 
+        posts: [
+          ...user.posts,
+          insertedId
+        ] 
       }
     })
 

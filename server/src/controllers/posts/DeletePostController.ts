@@ -7,8 +7,6 @@ export class DeletePostController {
     const { id } = req.params
     const { author } = req
 
-    console.log(id)
-
     try {
       const service = new DeletePostService
       const result = await service.execute(id, author!.id)

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import React, { Dispatch, RefObject, SetStateAction, useEffect, useState, useLayoutEffect } from 'react'
+import React, { Dispatch, RefObject, SetStateAction, useState } from 'react'
 
 import searchIcon from '../../../public/search.svg'
 import arrowBackIcon from '../../../public/arrow-back.svg'
@@ -10,6 +10,7 @@ interface FeelingsPickerProps {
 }
 
 const feelings = [
+  'none',
   '🙂 happy', 
   '😡 angry',
   '😔 sad',

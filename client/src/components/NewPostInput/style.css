@@ -50,6 +50,25 @@
   height: 440px;
 }
 
+.new_post_input-component > .post_image-example-box .remove_image-button {
+  position: absolute;
+  cursor: pointer;
+  border: none;
+  border-radius: 100%;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  transition: .2s;
+  right: 10px;
+  top: 10px;
+}
+
+.new_post_input-component > .post_image-example-box .remove_image-button:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .new_post_input-component > .options-container {
   display: flex;
   justify-content: space-between;

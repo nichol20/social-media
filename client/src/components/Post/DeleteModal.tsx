@@ -4,10 +4,10 @@ import { http } from '../../utils/http'
 
 interface DeleteModalProps {
   postId: string
-  setUpdatePosts: Dispatch<SetStateAction<boolean>>
+  refreshPosts: () => void
 }
 
-export const DeleteModal = ({ postId, setUpdatePosts }: DeleteModalProps) => {
+export const DeleteModal = ({ postId, refreshPosts }: DeleteModalProps) => {
   const { user } = useContext(AuthContext)
 
   const deletePost = async () => {
@@ -18,7 +18,7 @@ export const DeleteModal = ({ postId, setUpdatePosts }: DeleteModalProps) => {
         }
       })
 
-      setUpdatePosts(prevState => !prevState)
+      refreshPosts()
       closeDeleteModal()
     } catch (error) {
       console.log(error)

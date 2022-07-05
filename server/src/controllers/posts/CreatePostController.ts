@@ -13,7 +13,7 @@ export class CreatePostController {
     if(!description && !file) return res.status(400).json({ message: 'missing data' })
     
     if(PORT === '6000') {
-      imageLink = `http://localhost:5000/test_images/posts/${file?.filename}`
+      imageLink = `http://localhost:6000/test_images/posts/${file?.filename}`
       imagePath = `test_images/posts/${file?.filename}`
     } else {
       imageLink = `http://localhost:5000/images/posts/${file?.filename}`

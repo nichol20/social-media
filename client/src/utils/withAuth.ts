@@ -1,4 +1,5 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next"
+import { GetServerSideProps } from "next"
+import { http } from "./http"
 
 type WithAuth = (gssp: GetServerSideProps) => GetServerSideProps
 
@@ -17,8 +18,28 @@ export const withAuth: WithAuth = gssp => {
 
     try {
       const result = await gssp(context)
+      const { token } = context.req.cookies
+
+      const { sub: userId } = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString("utf8"))
       
-      return result
+      const { data } = await http.get(`/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      return {
+        ...result,
+        props: {
+          userData: {
+            ...data,
+            token
+          },
+          //@ts-ignore
+          ...result.props
+        }
+      }
+
     } catch (error: any) {
       console.log(error.message)
       return {

@@ -2,10 +2,13 @@ import { ObjectId } from "mongodb";
 import db from "../../db";
 
 interface Data {
-  name?: string
-  email?: string
-  password?: string
-  image_name?: string
+  name?: string | undefined
+  email?: string | undefined
+  password?: string | undefined
+  avatar?: string | undefined
+  avatar_path?: string | undefined
+  cover_photo?: string | undefined
+  cover_photo_path?: string | undefined
 }
 
 export class UpdateUserService {
@@ -23,7 +26,10 @@ export class UpdateUserService {
         name: data.name ?? user.name,
         email: data.email ?? user.email,
         password: data.password ?? user.password,
-        image_name: data.image_name ?? user.image_name
+        avatar: data.avatar ?? user.avatar,
+        avatar_path: data.avatar_path ?? user.avatar_path,
+        cover_photo: data.cover_photo ?? user.cover_photo,
+        cover_photo_path: data.cover_photo_path ?? user.cover_photo_path,
       }
     })
 

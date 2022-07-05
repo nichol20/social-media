@@ -17,14 +17,14 @@ import shareIcon from '../../../public/arrow-redo-outline.svg'
 
 interface PostProps {
   post: PostData
-  setUpdatePosts: Dispatch<SetStateAction<boolean>>
+  refreshPosts: () => void
 }
 
-export const Post = ({ post, setUpdatePosts }: PostProps) => {
+export const Post = ({ post, refreshPosts }: PostProps) => {
   const { user } = useContext(AuthContext)
   const [ showSubmenu, setShowSubmenu ] = useState(false)
   const [ showComments, setShowComments ] = useState(false)
-  const [ userLiked, setUserLiked ] = useState(user!.likedPosts.includes(post._id))
+  const [ userLiked, setUserLiked ] = useState(user!.liked_posts.includes(post._id))
   const [ author, setAuthor ] = useState<User>()
   const [ postLifetime, setPostLifetime ] = useState('')
   const feelingText = `is ${post.feeling.split(' ')[0]} feeling ${post.feeling.split(' ')[1]}`
@@ -81,7 +81,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
           }
         })
         input.value = ''
-        setUpdatePosts(prevState => !prevState)
+        refreshPosts()
       } catch (error) {
         console.log(error)
       }
@@ -100,11 +100,13 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
     setShowSubmenu(false)
   }
 
+  if(!author) return <>Loading ...</>
+
   return (
     <div className='post-component'>
       <div className="header">
         <div className="information">
-          <UserAvatar width='35px' height='35px' image={author?.image} />
+          <UserAvatar width='35px' height='35px' userId={author!._id} image={author!.avatar} />
           <span className='user_name'>{author?.name}</span>
           {
             post.feeling.length > 0 && (
@@ -168,7 +170,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
           showComments && (
             <div className="comments" id={`comments${post._id}`}>
               <div className="new_comment-box">
-                <UserAvatar width='25px' height='25px' image={user?.image} />
+                <UserAvatar width='25px' height='25px' userId={user!._id} image={user!.avatar} />
                 <input
                 type="text" 
                 placeholder='write a comment...' 
@@ -186,7 +188,7 @@ export const Post = ({ post, setUpdatePosts }: PostProps) => {
         }
       </div>
 
-      <DeleteModal postId={post._id} setUpdatePosts={setUpdatePosts} />
+      <DeleteModal postId={post._id} refreshPosts={refreshPosts} />
       <EditModal post={post} />
     </div>
   )

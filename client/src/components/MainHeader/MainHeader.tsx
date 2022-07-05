@@ -29,10 +29,11 @@ export const MainHeader = ({ setQuery }: MainHeaderProps) => {
       </div>
 
       <div className='main_header-options-box'>
-        <UserAvatar width='35px' height='35px' image={user?.image} />
+        <UserAvatar userId={user!._id} width='35px' height='35px' image={user!.avatar} />
 
         <div className='main_header-options-submenu-container'>
           <ul className='main_header-options-submenu-list'>
+            <li><Link href="/settings"><a>Settings</a></Link></li>
             <li><a onClick={signOut}>Log out</a></li>
           </ul>
         </div>
