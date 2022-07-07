@@ -6,7 +6,7 @@ describe("Create post", () => {
     name: 'createpost user test',
     email: 'createpostuser@test.com',
     password: 'createpostusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'create post test',
@@ -19,7 +19,7 @@ describe("Create post", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .post('/posts')
@@ -41,7 +41,7 @@ describe("Create post", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .post('/posts')

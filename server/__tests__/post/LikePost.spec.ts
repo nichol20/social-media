@@ -6,7 +6,7 @@ describe("Like post", () => {
     name: 'likepost user test',
     email: 'likepostuser@test.com',
     password: 'likepostusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'like post test',
@@ -19,7 +19,7 @@ describe("Like post", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body: { _id: postId } } = await request
       .post('/posts')

@@ -6,7 +6,7 @@ describe("Delete comment", () => {
     name: 'deletecomment user test',
     email: 'deletecommentuser@test.com',
     password: 'deletecommentusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'deletecomment post test',
@@ -17,12 +17,12 @@ describe("Delete comment", () => {
   }
 
   it("should delete a comment", async () => {
-    const { body: { token, user: { _id: userId } } } = await request
+    const { body: { token } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body: { _id: postId } } = await request
       .post('/posts')
@@ -36,9 +36,10 @@ describe("Delete comment", () => {
       .send({ comment: comment.message })
 
     const { body } = await request
-      .delete(`/posts/${postId}/comment/${commentId}`)
+      .delete(`/posts/${postId}/comments/${commentId}`)
       .set({ 'Authorization': `Bearer ${token}` })
 
+      console.log(body)
     expect(body.message).toBe('comment successfully deleted')
   })
 })

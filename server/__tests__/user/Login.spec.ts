@@ -5,7 +5,7 @@ describe("Login", () => {
     name: 'login user test',
     email: 'loginuser@test.com',
     password: 'loginusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
 
   it("should login", async () => {
@@ -14,7 +14,7 @@ describe("Login", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body } = await request
       .post('/login')

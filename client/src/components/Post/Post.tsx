@@ -172,15 +172,15 @@ export const Post = ({ post, refreshPosts }: PostProps) => {
               <div className="new_comment-box">
                 <UserAvatar width='25px' height='25px' userId={user!._id} image={user!.avatar} />
                 <input
-                type="text" 
-                placeholder='write a comment...' 
-                className='new_comment-input' 
-                onKeyDown={submitComment}
-              />
+                  type="text" 
+                  placeholder='write a comment...' 
+                  className='new_comment-input' 
+                  onKeyDown={submitComment}
+                />
               </div>
               {
                 post.comments.map((comment, index) => {
-                  return <Comment comment={comment} key={index} />
+                  return <Comment comment={comment} key={index} postId={post._id} />
                 })
               }
             </div>

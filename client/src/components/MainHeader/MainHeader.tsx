@@ -33,6 +33,8 @@ export const MainHeader = ({ setQuery }: MainHeaderProps) => {
 
         <div className='main_header-options-submenu-container'>
           <ul className='main_header-options-submenu-list'>
+            <li><Link href={`/users/${user!._id}`}><a>Profile</a></Link></li>
+            <div className='line'></div>
             <li><Link href="/settings"><a>Settings</a></Link></li>
             <li><a onClick={signOut}>Log out</a></li>
           </ul>

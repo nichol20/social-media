@@ -5,7 +5,7 @@ describe("Get all posts", () => {
     name: 'getallposts user test',
     email: 'getallpostsuser@test.com',
     password: 'getallpostsusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'get all posts test',
@@ -18,7 +18,7 @@ describe("Get all posts", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     await request
       .post('/posts')

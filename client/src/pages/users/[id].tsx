@@ -85,7 +85,7 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
 
   const cancelAvatarChange = () => {
     setChangingAvatar(false)
-    setAvatar(profileAuthor?.avatar)
+    setAvatar(profileAuthor!.avatar)
   }
 
   const changeAvatar = async () => {

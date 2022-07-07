@@ -5,7 +5,7 @@ describe("Delete a user", () => {
     name: 'delete user test',
     email: 'deleteuser@test.com',
     password: 'deleteusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
 
   it("should delete a user", async () => {
@@ -14,7 +14,7 @@ describe("Delete a user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .delete(`/users/${_id}`)
@@ -30,7 +30,7 @@ describe("Delete a user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
     
     const response = await request
       .delete(`/users/62977b2dc2517038801e2183`)

@@ -1,23 +1,26 @@
 import { request } from "../../tests/setup"
 
 
-describe("Create comment", () => {
+describe("Edit comment", () => {
   const user = {
-    name: 'createcomment user test',
-    email: 'createcommentuser@test.com',
-    password: 'createcommentusertest123',
+    name: 'editcomment user test',
+    email: 'editcommentuser@test.com',
+    password: 'editcommentusertest123',
     avatar: '__tests__/test_image.png'
   }
   const post = {
-    description: 'createcomment post test',
+    description: 'editcomment post test',
     image: '__tests__/test_image.png'
   }
   const comment = {
-    message: 'create comment test'
+    message: 'edit comment test'
+  }
+  const newComment = {
+    message: 'comment edited'
   }
 
-  it("should create a comment", async () => {
-    const { body: { token, user: { _id: userId } } } = await request
+  it("should edit a comment", async () => {
+    const { body: { token } } = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
@@ -30,13 +33,17 @@ describe("Create comment", () => {
       .field('description', post.description)
       .attach('image', post.image)
 
-    const { body, status } = await request
+    const { body: { comment: { id: commentId }  } } = await request
       .post(`/posts/${postId}/comments`)
       .set({ 'Authorization': `Bearer ${token}` })
       .send({ comment: comment.message })
 
-    expect(body.comment.message).toBe(comment.message)
-    expect(body.comment.author_id).toBe(userId)
+    const { body, status } = await request
+      .patch(`/posts/${postId}/comments/${commentId}`)
+      .set({ 'Authorization': `Bearer ${token}` })
+      .send({ comment: newComment.message })
+
+    expect(body.comment.message).toBe(newComment.message)
     expect(status).toBe(200)
   })
 })

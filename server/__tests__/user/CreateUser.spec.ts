@@ -5,7 +5,7 @@ describe("Create user", () => {
     name: 'create user test',
     email: 'createuser@test.com',
     password: 'createusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
 
   it("should create a user", async () => {
@@ -14,7 +14,7 @@ describe("Create user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     expect(response.body).toHaveProperty('token')
     expect(response.body.user.name).toBe(user.name)
@@ -30,14 +30,14 @@ describe("Create user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .post('/users')
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     
     expect(response.status).toBe(409)
@@ -60,7 +60,7 @@ describe("Create user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', '__tests__/test_image.ico')
+      .attach('avatar', '__tests__/test_image.ico')
 
     expect(response.status).toBe(400)
     expect(response.body.message).toBe('Invalid mime type')

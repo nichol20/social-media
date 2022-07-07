@@ -5,7 +5,7 @@ describe("Check email status", () => {
     name: 'checkemailstatus user test',
     email: 'checkemailstatususer@test.com',
     password: 'checkemailstatususertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
 
   it("should receive 'registered'", async () => {
@@ -14,7 +14,7 @@ describe("Check email status", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body: { emailStatus } } = await request
       .post('/users/check-email-status')

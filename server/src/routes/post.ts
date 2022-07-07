@@ -12,6 +12,7 @@ import { CreateCommentController } from '../controllers/posts/CreateCommentContr
 import { LikePostController } from '../controllers/posts/LikePostController'
 import { DeleteLikeController } from '../controllers/posts/DeleteLikeController'
 import { DeleteCommentController } from '../controllers/posts/DeleteCommentController'
+import { EditCommentController } from '../controllers/posts/EditCommentController'
 
 const postRoutes = express.Router()
 const uploadSingleImage = postUpload.single('image')
@@ -44,9 +45,11 @@ postRoutes.patch('/posts/:id', ensureAuthenticated, (req, res) => {
   })
 })
 
+postRoutes.patch('/posts/:postId/comments/:commentId', ensureAuthenticated, new EditCommentController().handle)
+
 /* --------------------------------- DELETE --------------------------------- */
 
-postRoutes.delete('/posts/:postId/comment/:commentId', ensureAuthenticated, new DeleteCommentController().handle)
+postRoutes.delete('/posts/:postId/comments/:commentId', ensureAuthenticated, new DeleteCommentController().handle)
 
 postRoutes.delete('/posts/:postId/like', ensureAuthenticated, new DeleteLikeController().handle)
 

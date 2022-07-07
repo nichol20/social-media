@@ -6,7 +6,7 @@ describe("Update user", () => {
     name: 'update user test',
     email: 'updateuser@test.com',
     password: 'updateusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const newUserData = {
     name: 'newdata user test',
@@ -20,7 +20,7 @@ describe("Update user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .patch(`/users/${ _id }`)
@@ -45,7 +45,7 @@ describe("Update user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request
       .patch(`/users/62977b2dc2517038801e2183`)

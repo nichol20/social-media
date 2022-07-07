@@ -6,7 +6,7 @@ describe("Update posts", () => {
     name: 'updatepost user test',
     email: 'updatepostuser@test.com',
     password: 'updatepostusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'update post test',
@@ -22,7 +22,7 @@ describe("Update posts", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body: { _id: postId } } = await request
       .post('/posts')
@@ -51,7 +51,7 @@ describe("Update posts", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const { body: { insertedId: postId } } = await request
       .post('/posts')

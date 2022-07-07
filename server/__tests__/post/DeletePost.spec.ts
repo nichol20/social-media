@@ -5,7 +5,7 @@ describe("Delete post", () => {
     name: 'deletepost user test',
     email: 'deletepostuser@test.com',
     password: 'deletepostusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
   const post = {
     description: 'delete post test',
@@ -18,7 +18,7 @@ describe("Delete post", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
     
     const { body: { _id: postId } } = await request
       .post('/posts')

@@ -5,7 +5,7 @@ describe("Get user", () => {
     name: 'get user test',
     email: 'getuser@test.com',
     password: 'getusertest123',
-    image: '__tests__/test_image.png'
+    avatar: '__tests__/test_image.png'
   }
 
   it("should fetch a specific user", async () => {
@@ -14,7 +14,7 @@ describe("Get user", () => {
       .field('name', user.name)
       .field('email', user.email)
       .field('password', user.password)
-      .attach('image', user.image)
+      .attach('avatar', user.avatar)
 
     const response = await request.get(`/users/${_id}`)
       .set({ 'Authorization': `Bearer ${token}`})
