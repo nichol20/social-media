@@ -29,6 +29,7 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
   const [ profileAuthor, setProfileAuthor ] = useState<User | null>(null)
   const [ avatar, setAvatar ] = useState(defaultAvatar.src)
   const [ coverPhoto, setCoverPhoto ] = useState(defaultCoverPhoto.src)
+  const [ updateAuthor, setUpdateAuthor ] = useState(false)
   const router = useRouter()
   const { id: profileAuthorId } = router.query
 
@@ -52,7 +53,11 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
       }
     }
     fetchProfileAuthor()
-  }, [ user ])
+  }, [ user, updateAuthor ])
+
+  const refreshAuthor = () => {
+    setUpdateAuthor(!updateAuthor)
+  }
 
   const cancelCoverPhotoChange = () => {
     setChangingCoverPhoto(false)
@@ -119,8 +124,8 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
       <MainHeader setQuery={setQuery} />
 
       <div className="profile-container">
-        <div className="profile_cover">
-          <div className="banner_image-box">
+        <div className="profile_banner">
+          <div className="cover_image-box">
             <Image src={coverPhoto} alt={profileAuthor.name} layout='fill' objectFit='fill' />
             {
               user._id === profileAuthor._id
@@ -136,13 +141,13 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
                 </>
               ) : (
                 <>
-                  <label htmlFor="changeBannerPicture">
+                  <label htmlFor="changeCoverPhoto">
                     <Image src={imagesIcon} alt='images icon' height='24px' width='24px'/>
                     Edit cover photo
                   </label>
                   <input
                   type="file" 
-                  id='changeBannerPicture' 
+                  id='changeCoverPhoto' 
                   accept='.png, .jpg, .jpeg' 
                   onChange={handleCoverPhotoChange} 
                   />
@@ -187,7 +192,12 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
             <h1 className='profile_user_name'>{profileAuthor.name}</h1>
           </div>
         </div>
-        <Feed query={query} postIds={profileAuthor.posts} showNewPostInput={profileAuthor._id === user._id} />
+        <Feed
+         query={query} 
+         postIds={profileAuthor.posts} 
+         showNewPostInput={profileAuthor._id === user._id} 
+         refreshAuthor={refreshAuthor}
+        />
       </div>
     </div>
   )

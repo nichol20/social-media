@@ -11,10 +11,11 @@ import happyIcon from '../../../public/happy.svg'
 import closeIcon from '../../../public/close.svg'
 
 interface NewPostInputProps {
-  setUpdatePosts: Dispatch<SetStateAction<boolean>>
+  refreshPosts: () => void
+  refreshAuthor?: () => void
 }
 
-export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
+export const NewPostInput = ({ refreshPosts, refreshAuthor }: NewPostInputProps) => {
   const { user } = useContext(AuthContext)
   const [ postImage, setPostImage ] = useState('')
   const [ feeling, setFeeling ] = useState('')
@@ -35,9 +36,12 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
       })
 
       const descriptionTextarea = (document.querySelector('#descriptionTextarea') as HTMLTextAreaElement)
+      const postImageInput = (document.querySelector('#postImageInput') as HTMLInputElement)
+      postImageInput.value = ''
       descriptionTextarea.value = ''
       setPostImage('')
-      setUpdatePosts(prevState => !prevState)
+      if(refreshAuthor) refreshAuthor()
+      refreshPosts()
       setFeelingText('')
     } catch (error) {
       console.log(error)
@@ -84,7 +88,7 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
       <div className="options-container">
         
         <ul className="options-list">
-          <label htmlFor="postImage">
+          <label htmlFor="postImageInput" data-testid='postImageLabel' >
             <li className="options-item">
                 <div className="image-box">
                   <Image src={imagesIcon} alt='images icon' className='images-icon'/>
@@ -93,13 +97,13 @@ export const NewPostInput = ({ setUpdatePosts }: NewPostInputProps) => {
             </li>
             <input
              type="file" 
-             id='postImage' 
+             id='postImageInput' 
              accept='.png, .jpg, .jpeg' 
              name='image' 
              onChange={e => setPostImage(URL.createObjectURL(e.target.files![0]))}
             />
           </label>
-          <li className="options-item" onClick={showFeelingsPicker}>
+          <li className="options-item" data-testid='feelingsPickerOption' onClick={showFeelingsPicker}>
             <div className="image-box">
               <Image src={happyIcon} alt='happy icon' className='happy-icon'/>
             </div>

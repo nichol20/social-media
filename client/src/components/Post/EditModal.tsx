@@ -10,9 +10,11 @@ import { FeelingsPicker } from '../FeelingsPicker/FeelingsPicker'
 
 interface EditModalProps {
   post: PostData
+  refreshPosts: () => void
+  refreshAuthor?: () => void
 }
 
-export const EditModal = ({ post }: EditModalProps) => {
+export const EditModal = ({ post, refreshPosts, refreshAuthor }: EditModalProps) => {
   const { user } = useContext(AuthContext)
   const [ newDescription, setNewDescription ] = useState(post.description)
   const [ newFeeling, setNewFeeling ] = useState(post.feeling)
@@ -29,6 +31,10 @@ export const EditModal = ({ post }: EditModalProps) => {
         Authorization: `Bearer ${user?.token}`
       }
     })
+
+    refreshPosts()
+    if(refreshAuthor) refreshAuthor()
+    closeEditModal() //refresh post neguinho do caxeta
   }
 
   const showFeelingsPicker = () => {

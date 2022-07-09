@@ -9,9 +9,6 @@ export class CreateUserController {
     let avatarLink: string
     let avatarPath: string
 
-    console.log(req.body)
-    console.log(file)
-
     if(!email || !password || !name || !file) return res.status(400).json({ message: 'missing data' })
 
     if(PORT === '6000') {

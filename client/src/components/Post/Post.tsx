@@ -120,7 +120,7 @@ export const Post = ({ post, refreshPosts }: PostProps) => {
           author?._id === user?._id && (
             <div className="options-box">
               <div className="image-box" onClick={() => setShowSubmenu(!showSubmenu)}>
-                <Image src={optionsIcon} alt="options"/>
+                <Image src={optionsIcon} alt="post options"/>
               </div>
               <div className={`submenu-container ${showSubmenu ? 'active' : ''}`}>
                 <ul className="submenu-list">
@@ -189,7 +189,7 @@ export const Post = ({ post, refreshPosts }: PostProps) => {
       </div>
 
       <DeleteModal postId={post._id} refreshPosts={refreshPosts} />
-      <EditModal post={post} />
+      <EditModal post={post} refreshPosts={refreshPosts} />
     </div>
   )
 }

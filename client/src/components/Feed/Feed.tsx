@@ -3,8 +3,6 @@ import { http } from '../../utils/http'
 import { NewPostInput } from '../NewPostInput/NewPostInput'
 import { Post } from '../Post/Post'
 
-import defaultImage from '../../../public/default.png'
-import { StaticImageData } from 'next/image'
 import { AuthContext } from '../../Contexts/AuthContext'
 
 export interface Comment {
@@ -27,10 +25,11 @@ export interface PostData {
 interface FeedProps {
   query: string
   postIds?: string[]
+  refreshAuthor?: () => void
   showNewPostInput?: boolean
 }
 
-export const Feed = ({ query, postIds, showNewPostInput=true }: FeedProps) => {
+export const Feed = ({ query, postIds, showNewPostInput=true, refreshAuthor }: FeedProps) => {
   const { user } = useContext(AuthContext)
   const [ posts, setPosts ] = useState<PostData[]>([])
   const [ updatePosts, setUpdatePosts ] = useState(false)
@@ -75,14 +74,15 @@ export const Feed = ({ query, postIds, showNewPostInput=true }: FeedProps) => {
   }, [ postIds ])
 
   const refreshPosts = () => {
-    setUpdatePosts(prevState => !prevState)
+    setUpdatePosts(!updatePosts)
   }
 
   return (
     <div className='feed-component'>
-      { showNewPostInput && <NewPostInput setUpdatePosts={setUpdatePosts} /> }
+      { showNewPostInput && <NewPostInput refreshPosts={refreshPosts} refreshAuthor={refreshAuthor} /> }
       {
         posts.map(post => {
+          if(!post) return
           if(post.description.toLocaleLowerCase().includes(query)) {
             return <Post key={post._id} post={post} refreshPosts={refreshPosts} />
           }

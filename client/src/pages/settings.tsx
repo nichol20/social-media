@@ -20,9 +20,10 @@ const Settings: NextPage<SettingsProps> = ({ userData }) => {
   const changeEmail = async (event: FormEvent) => {
     event.preventDefault()
     const form = (document.querySelector('#changeEmailForm') as HTMLFormElement)
+    const formData = new FormData(form)
     
     try {
-      await http.patch(`/users/${user._id}`, form, {
+      await http.patch(`/users/${user._id}`, formData, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -36,9 +37,10 @@ const Settings: NextPage<SettingsProps> = ({ userData }) => {
   const changePassword = async (event: FormEvent) => {
     event.preventDefault()
     const form = (document.querySelector('#changePasswordForm') as HTMLFormElement)
+    const formData = new FormData(form)
 
     try {
-      await http.patch(`/users/${user._id}`, form, {
+      await http.patch(`/users/${user._id}`, formData, {
         headers: {
           Authorization: `Bearer ${user.token}`
         }
@@ -103,7 +105,7 @@ const Settings: NextPage<SettingsProps> = ({ userData }) => {
             </div>
             <div className="field">
               <label htmlFor="ChangePasswordFormNewPassword">New Password</label>
-              <input type="password" name="" id="ChangePasswordFormNewPassword" />
+              <input type="password" name="password" id="ChangePasswordFormNewPassword" />
             </div>
             <div className="field">
               <label htmlFor="ChangePasswordFormConfirmNewPassword">Confirm New Password</label>

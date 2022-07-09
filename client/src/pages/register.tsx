@@ -181,7 +181,7 @@ const Register: NextPage = () => {
                 />
               </div>
 
-              <label htmlFor='userImage' className='user_image-input'>
+              <label htmlFor='userImage' className='user_image-input' data-testid='avatarLabel'>
                 <div className="image-box">
                   <Image src={pencilIcon} alt=''/>
                 </div>
