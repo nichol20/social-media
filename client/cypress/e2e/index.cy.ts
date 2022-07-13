@@ -146,14 +146,14 @@ describe('Full flow', () => {
       email: 'cypress@anotheremail.com',
       password: 'cypressanotherpassword123'
     }
-    cy.get('#ChangeEmailFormNewEmail').clear().type(newUserCredentials.email)
-    cy.get('#ChangeEmailFormCurrentPassword').type(newUser.password)
+    cy.get('#newEmailOfEmailChangeForm').clear().type(newUserCredentials.email)
+    cy.get('#currentPasswordOfEmailChangeForm').type(newUser.password)
     cy.get('.change_email-button').click()
     
     /* ------ Change password  ------ */
-    cy.get('#ChangePasswordFormCurrentPassowrd').type(newUser.password)
-    cy.get('#ChangePasswordFormNewPassword').type(newUserCredentials.password)
-    cy.get('#ChangePasswordFormConfirmNewPassword').type(newUserCredentials.password)
+    cy.get('#currentPasswordOfChangePasswordForm').type(newUser.password)
+    cy.get('#newPasswordOfChangePasswordForm').type(newUserCredentials.password)
+    cy.get('#confirmNewPasswordOfChangePasswordForm').type(newUserCredentials.password)
     cy.get('.change_password-button').click()
 
     /* ------ Log out  ------ */

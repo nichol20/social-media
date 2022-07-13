@@ -5,14 +5,14 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  gap: 30px;
+  gap: 20px;
 }
 
 .social_media_app-settings .settings-container {
   background: #fff;
   border-radius: 10px;
   width: 1000px;
-  height: 500px;
+  height: 520px;
   padding: 40px;
   display: flex;
 }
@@ -93,6 +93,14 @@
 .social_media_app-settings .settings-container .settings-content > form > .field > input:hover
 {
   border: 1px solid #000;
+}
+
+.social_media_app-settings .settings-container .settings-content > form > .confirm_password-mismatch_text, 
+.social_media_app-settings .settings-container .settings-content > form > .current_password_error-text 
+{
+  text-align: center;
+  font-size: .875em;
+  color: red;
 }
 
 .social_media_app-settings .settings-container .settings-content > form > button[type='submit'] {

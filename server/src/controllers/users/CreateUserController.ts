@@ -15,7 +15,7 @@ export class CreateUserController {
       avatarLink = `http://localhost:6000/test_images/users/${file.filename}`
       avatarPath = `test_images/users/${file.filename}`
     } else {
-      avatarLink = `http://localhost:5000/images/users/${file.filename}`
+      avatarLink = `http://server:5000/images/users/${file.filename}`
       avatarPath = `images/users/${file.filename}`
     }
     

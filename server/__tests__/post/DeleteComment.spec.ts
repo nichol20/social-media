@@ -39,7 +39,6 @@ describe("Delete comment", () => {
       .delete(`/posts/${postId}/comments/${commentId}`)
       .set({ 'Authorization': `Bearer ${token}` })
 
-      console.log(body)
     expect(body.message).toBe('comment successfully deleted')
   })
 })

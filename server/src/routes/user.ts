@@ -10,6 +10,8 @@ import { GetUserController } from '../controllers/users/GetUserController'
 import { UpdateUserController } from '../controllers/users/UpdateUserController'
 import { LoginController } from '../controllers/users/LoginController'
 import { CheckEmailStatusController } from '../controllers/users/CheckEmailStatusController'
+import { UpdateEmailController } from '../controllers/users/UpdateEmailController'
+import { UpdatePasswordController } from '../controllers/users/UpdatePasswordController'
 
 const userRoutes = express.Router()
 const uploadSingleImage = userUpload.single('avatar')
@@ -33,6 +35,11 @@ userRoutes.post('/users', (req, res) => {
 })
 
 userRoutes.post('/users/check-email-status', new CheckEmailStatusController().handle)
+
+/* --------------------------------- PUT --------------------------------- */
+userRoutes.put('/users/:userId/change-email', ensureAuthenticated, new UpdateEmailController().handle)
+
+userRoutes.put('/users/:userId/change-password', ensureAuthenticated, new UpdatePasswordController().handle)
 
 /* --------------------------------- PATCH --------------------------------- */
 

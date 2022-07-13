@@ -1,5 +1,6 @@
 import { NextPage } from 'next'
 import Image from 'next/image'
+import Link from 'next/link'
 import { FormEvent, useContext, useEffect, useState } from 'react'
 
 import defaultImage from '../../public/default.png'
@@ -14,7 +15,6 @@ const Register: NextPage = () => {
   const [ password, setPassword ] = useState('')
   const [ confirmPassword, setConfirmPassword ] = useState('')
   const [ userImage, setUserImage ] = useState(defaultImage.src)
-  const [ confirmPasswordFocused, setConfirmPasswordFocused ] = useState(false)
   const [ disableNextButton, setDisableNextButton ] = useState(true)
   const [ emailExists, setEmailExists ] = useState(false)
 
@@ -27,8 +27,11 @@ const Register: NextPage = () => {
       formData.delete('avatar')
 
       const blobImage = await fetch(defaultImage.src).then(response => response.blob())
+      const file = new File([blobImage], 'profile_picture.png', {
+        type: 'image/png'
+      })
     
-      formData.append('avatar', blobImage)
+      formData.append('avatar', file)
     }
 
     await signUp(formData)
@@ -148,11 +151,10 @@ const Register: NextPage = () => {
                id='confirm_password'
                data-testid='confirmPasswordInput'
                onChange={e => setConfirmPassword(e.target.value)}
-               required 
-               onFocus={() => setConfirmPasswordFocused(true)}
+               required
               />
               {
-                (password !== confirmPassword && confirmPasswordFocused)
+                (password !== confirmPassword && password.length > 0 && confirmPassword.length > 0)
                 && <span className='confirm_password-mismatch_text'>
                     The Confirm Password does not match
                   </span>
@@ -167,6 +169,10 @@ const Register: NextPage = () => {
             >
               Next
             </button>
+            <span className='back_to_login-text'>
+              Do you already have an account?
+              <Link href='/login'><a>login</a></Link>
+            </span>
           </div>
 
           <div className='step'>

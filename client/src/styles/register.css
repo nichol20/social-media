@@ -137,6 +137,16 @@
   box-shadow: none;
 }
 
+.social_media_app-register .register-interface .steps-box .step .back_to_login-text {
+  font-size: .750em;
+  font-weight: 400;
+}
+
+.social_media_app-register .register-interface .steps-box .step .back_to_login-text > a {
+  color: #000;
+  margin-left: 3px;
+}
+
 .social_media_app-register .register-interface .steps-box .step .user_image-field {
   position: relative;
   display: flex;

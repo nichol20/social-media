@@ -4,7 +4,7 @@ import { CheckEmailStatusService } from "../../services/users/CheckEmailStatusSe
 export class CheckEmailStatusController {
   async handle(req: Request, res: Response) {
     const { email } = req.body
-
+    
     try {
       const service = new CheckEmailStatusService
       const result = await service.execute(email)

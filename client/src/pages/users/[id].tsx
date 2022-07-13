@@ -69,8 +69,11 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
     try {
       const formData = new FormData()
       const blobImage = await fetch(coverPhoto).then(response => response.blob())
+      const file = new File([blobImage], 'cover_photo.png', {
+        type: 'image/png'
+      })
 
-      formData.append('cover_photo', blobImage)
+      formData.append('cover_photo', file)
 
       await http.patch(`/users/${user._id}`, formData, {
         headers: {
@@ -159,7 +162,7 @@ const UserPage: NextPage<UserPageProps> = ({ userData }) => {
           </div>
           <div className="main">
             <div className="profile_user_image-box">
-              <UserAvatar userId={profileAuthor._id} image={avatar} height='100px' width='100px' />
+              <UserAvatar userId={profileAuthor._id} image={profileAuthor.avatar} height='100px' width='100px' />
               {
                 user._id === profileAuthor._id ?
                  changingAvatar ? (

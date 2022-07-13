@@ -5,7 +5,7 @@ import { UpdateUserService } from "../../services/users/UpdateUserService";
 export class UpdateUserController {
   async handle(req: Request, res: Response) {
     const { id } = req.params
-    const { name, email, password } = req.body
+    const { name } = req.body
     const { author } = req
     const files= req.files as {[fieldname: string]: Express.Multer.File[]};
     let avatarLink: string | undefined
@@ -27,11 +27,11 @@ export class UpdateUserController {
       }
     } else {
       if(files['avatar']) {
-        avatarLink = `http://localhost:5000/images/users/${files['avatar'][0].filename}`
+        avatarLink = `http://server:5000/images/users/${files['avatar'][0].filename}`
         avatarPath = `images/users/${files['avatar'][0].filename}`
       }
       if(files['cover_photo']) {
-        coverPhotoLink = `http://localhost:5000/images/users/${files['cover_photo'][0].filename}`
+        coverPhotoLink = `http://server:5000/images/users/${files['cover_photo'][0].filename}`
         coverPhotoPath = `images/users/${files['cover_photo'][0].filename}`
       }
     }
@@ -40,8 +40,6 @@ export class UpdateUserController {
       const service = new UpdateUserService
       const result = await service.execute(id, {
         name: name,
-        email: email,
-        password: password,
         avatar: avatarLink,
         avatar_path: avatarPath,
         cover_photo: coverPhotoLink,

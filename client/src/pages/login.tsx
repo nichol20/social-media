@@ -16,7 +16,7 @@ const Login: NextPage = () => {
     try {
       await signIn({ email, password })
     } catch (error: any) {
-      if(error.response.data.message === 'user not found') {
+      if(error.response?.data?.message === 'user not found') {
         setInvalidCredentials(true)
       }
     }

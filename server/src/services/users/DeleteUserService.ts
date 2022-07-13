@@ -4,11 +4,11 @@ import path from 'path'
 import db from "../../db";
 
 export class DeleteUserService {
-  async execute(id: string) {
+  async execute(userId: string) {
     // Find user in database
     const userCollection = db.getDb().collection('users')
     const postCollection = db.getDb().collection('posts')
-    const user = await userCollection.findOne({ _id: new ObjectId(id) })
+    const user = await userCollection.findOne({ _id: new ObjectId(userId) })
 
     // case user not found
     if(!user) throw new Error('user not found')
@@ -19,12 +19,17 @@ export class DeleteUserService {
         if(err) console.log(err)
       })
     }
+    if(user.cover_photo_path.length > 0) {
+      fs.unlink(path.resolve('src', user.cover_photo_path), err => {
+        if(err) console.log(err)
+      })
+    }
 
     user.posts.forEach(async (postId: string) => {
       const post = await postCollection.findOne({ _id: new ObjectId(postId) })
 
       if(!post) return
-      console.log(post)
+
       if(post.image_path > 0)  {
         fs.unlink(path.resolve('src', post.image_path), err => {
           if(err) console.log(err)

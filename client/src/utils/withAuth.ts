@@ -1,3 +1,4 @@
+import axios from "axios"
 import { GetServerSideProps } from "next"
 import { http } from "./http"
 
@@ -22,7 +23,7 @@ export const withAuth: WithAuth = gssp => {
 
       const { sub: userId } = JSON.parse(Buffer.from(token.split(".")[1], "base64").toString("utf8"))
       
-      const { data } = await http.get(`/users/${userId}`, {
+      const { data } = await axios.get(`http://server:5000/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -41,7 +42,7 @@ export const withAuth: WithAuth = gssp => {
       }
 
     } catch (error: any) {
-      console.log(error.message)
+      console.log(error)
       return {
         redirect: {
           statusCode: 302,

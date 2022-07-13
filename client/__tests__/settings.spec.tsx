@@ -1,12 +1,12 @@
 import { render, screen } from '@testing-library/react'
-import Home from '../src/pages/index'
 import { AuthProvider, User } from '../src/Contexts/AuthContext'
+import Settings from '../src/pages/settings'
 
 interface Wrapper {
   children: React.ReactNode
 }
 
-test("home page", async () => {
+test("settings page", async () => {
   const wrapper = ({ children }: Wrapper) => (
     <AuthProvider>
       {children}
@@ -27,8 +27,7 @@ test("home page", async () => {
     token: 'fakeToken'
   }
 
-  
-  render(<Home userData={fakeUser} />, { wrapper })
+  render(<Settings userData={fakeUser} />, { wrapper })
 
-  expect(screen.getByRole('button', { name: /share/i })).toBeInTheDocument()
+  expect(screen.getByRole('heading', { name: /settings/i })).toBeInTheDocument()
 })

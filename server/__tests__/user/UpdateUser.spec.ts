@@ -26,15 +26,11 @@ describe("Update user", () => {
       .patch(`/users/${ _id }`)
       .set({ 'Authorization': `Bearer ${token}` })
       .field('name', newUserData.name)
-      .field('email', newUserData.email)
-      .field('password', newUserData.password)
 
     const userCollection = db.collection('users')
     const updatedUser =  await userCollection.findOne({ _id: new ObjectId(_id) })
 
     expect(updatedUser?.name).toBe(newUserData.name)
-    expect(updatedUser?.email).toBe(newUserData.email)
-    expect(updatedUser?.password).toBe(newUserData.password)
     expect(response.body.message).toBe('successfully updated')
     expect(response.status).toBe(200)
   })
