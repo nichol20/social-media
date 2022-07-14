@@ -6,6 +6,7 @@ import { postRoutes } from './routes/post'
 import { userRoutes } from './routes/user'
 
 export const PORT = process.env.PORT || 5000
+export const JWT_SECRET = process.env.JWT_SECRET || 'jwt_secret'
 const app = express()
 
 app.use(cors())

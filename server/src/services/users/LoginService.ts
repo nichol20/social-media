@@ -1,5 +1,6 @@
 import db from "../../db";
 import jwt from "jsonwebtoken";
+import { JWT_SECRET } from "../../server";
 
 export class LoginService {
   async execute(email: string, password: string) {
@@ -8,7 +9,7 @@ export class LoginService {
 
     if(!user) throw new Error('user not found')
 
-    const token = jwt.sign({}, process.env.JWT_SECRET!, { subject: String(user._id), expiresIn: '1d' })
+    const token = jwt.sign({}, JWT_SECRET, { subject: String(user._id), expiresIn: '1d' })
     
     return { token } 
   }

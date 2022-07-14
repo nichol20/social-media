@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import jwt from 'jsonwebtoken'
 import db from "../../db";
+import { JWT_SECRET } from "../../server";
 
 interface User {
   name: string
@@ -27,7 +28,7 @@ export class CreateUserService {
 
     const newUser = await userCollection.findOne({ _id: new ObjectId(insertedId) })
     
-    const token = jwt.sign({}, process.env.JWT_SECRET!, { subject: String(newUser?._id), expiresIn: '1d' })
+    const token = jwt.sign({}, JWT_SECRET, { subject: String(newUser?._id), expiresIn: '1d' })
     return {
       token,
       user: newUser

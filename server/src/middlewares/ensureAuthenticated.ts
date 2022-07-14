@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+import { JWT_SECRET } from '../server'
 
 export interface Author {
   id: string
@@ -13,7 +14,7 @@ export const ensureAuthenticated = (req: Request, res: Response, next: NextFunct
   const [, token] = authorizationHeader.split(' ')
 
   try {
-    const { sub } = <JwtPayload>jwt.verify(token, process.env.JWT_SECRET!)
+    const { sub } = <JwtPayload>jwt.verify(token, JWT_SECRET)
 
     req.author = { id: sub! }
 
